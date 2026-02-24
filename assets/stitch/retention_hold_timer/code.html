@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Retention Hold Timer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom glow effect since animations are restricted */
+        .glow-static {
+            box-shadow: 0 0 40px -10px rgba(19, 127, 236, 0.4);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-slate-900 dark:text-slate-100 min-h-screen flex flex-col overflow-hidden">
+<!-- Header -->
+<header class="flex items-center justify-between p-4 pb-2 bg-background-light dark:bg-background-dark z-10 relative">
+<button class="flex items-center justify-center size-10 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-900 dark:text-slate-100">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+<h2 class="text-lg font-bold leading-tight tracking-tight text-center flex-1">Breath Hold</h2>
+<button class="flex items-center justify-center size-10 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors text-slate-900 dark:text-slate-100">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+</button>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col items-center justify-center px-6 relative w-full max-w-md mx-auto">
+<!-- Central Visualization -->
+<div class="relative flex items-center justify-center mb-12">
+<!-- Outer Glow Ring -->
+<div class="absolute inset-0 rounded-full bg-primary/10 scale-150 blur-xl"></div>
+<!-- Main Circle Container -->
+<div class="relative size-64 rounded-full border-4 border-slate-200 dark:border-slate-800 flex flex-col items-center justify-center bg-background-light dark:bg-background-dark glow-static">
+<!-- Inner static circle decoration -->
+<div class="absolute inset-2 rounded-full border border-primary/20"></div>
+<span class="text-sm uppercase tracking-widest text-slate-500 dark:text-slate-400 font-medium mb-2">Time Elapsed</span>
+<div class="flex items-baseline text-slate-900 dark:text-white">
+<span class="text-6xl font-bold tracking-tighter tabular-nums">01:42</span>
+<span class="text-2xl font-medium text-slate-400 dark:text-slate-500 ml-1 tabular-nums">.05</span>
+</div>
+</div>
+</div>
+<!-- Instructional Text -->
+<div class="text-center space-y-2 mb-10 z-10">
+<h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Retention Phase</h1>
+<p class="text-slate-500 dark:text-slate-400 text-base max-w-[280px] mx-auto leading-relaxed">
+                Hold your breath comfortably. Focus on the stillness within.
+            </p>
+</div>
+<!-- Primary Action -->
+<div class="w-full flex justify-center z-10 mb-8">
+<button class="w-full max-w-[320px] h-14 bg-primary hover:bg-primary/90 active:bg-primary/95 text-white text-base font-bold tracking-wide rounded-xl shadow-lg shadow-primary/20 transition-all transform active:scale-[0.98] uppercase">
+                I Need To Inhale
+            </button>
+</div>
+</main>
+<!-- Phase Controller (Bottom Navigation/Status) -->
+<div class="w-full bg-background-light dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 pb-8 pt-4 px-6 z-10">
+<div class="flex justify-between items-center max-w-md mx-auto">
+<!-- Phase 1: Inhale -->
+<div class="flex flex-col items-center gap-1 opacity-40">
+<div class="size-2 rounded-full bg-slate-400 dark:bg-slate-600"></div>
+<span class="text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Inhale</span>
+</div>
+<!-- Connector Line -->
+<div class="h-[1px] flex-1 bg-slate-200 dark:bg-slate-800 mx-2"></div>
+<!-- Phase 2: Retention (Active) -->
+<div class="flex flex-col items-center gap-1 relative">
+<div class="absolute -top-[18px] bg-primary/20 px-2 py-0.5 rounded text-[10px] font-bold text-primary dark:text-primary">Current</div>
+<div class="size-3 rounded-full bg-primary ring-4 ring-primary/20"></div>
+<span class="text-[10px] font-bold uppercase tracking-wider text-primary">Retention</span>
+</div>
+<!-- Connector Line -->
+<div class="h-[1px] flex-1 bg-slate-200 dark:bg-slate-800 mx-2"></div>
+<!-- Phase 3: Exhale -->
+<div class="flex flex-col items-center gap-1 opacity-40">
+<div class="size-2 rounded-full bg-slate-400 dark:bg-slate-600"></div>
+<span class="text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Exhale</span>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,19 @@
+{
+  "tasks": {
+    "dev": "deno run --allow-net --allow-read --watch dev.ts",
+    "serve": "deno run --allow-net --allow-read dev.ts",
+    "build": "deno run --allow-read --allow-write --allow-env build.ts",
+    "test": "deno test src/"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1"
+  },
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "lib": ["deno.ns", "dom", "dom.iterable", "dom.asynciterable"]
+  }
+}

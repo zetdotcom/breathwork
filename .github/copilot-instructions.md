@@ -1,0 +1,1 @@
+At the end of your files changes, checks if those files are mentioned anywhere in the documentation, in close README files, or if those files have comments inside them, check whether those comments should be updated to reflect the changes you made. If they should, update those comments and documentation to reflect the changes you made. If they should not, leave them as they are.

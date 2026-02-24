@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Session Settings - Variant 1</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden">
+<div class="relative flex min-h-screen w-full flex-col overflow-hidden">
+<!-- Header -->
+<div class="sticky top-0 z-10 flex items-center justify-between bg-background-light dark:bg-background-dark px-4 py-3 border-b border-slate-200 dark:border-slate-800">
+<button class="flex h-10 w-10 items-center justify-center rounded-full text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<h2 class="text-lg font-bold leading-tight tracking-tight flex-1 text-center pr-10">Session Settings</h2>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto pb-24">
+<!-- Prepare Time Section -->
+<section class="mt-4 px-4">
+<h3 class="mb-3 text-base font-bold text-slate-900 dark:text-white">Prepare Time</h3>
+<div class="rounded-xl bg-white p-1 shadow-sm ring-1 ring-slate-200 dark:bg-slate-800 dark:ring-slate-700">
+<div class="flex">
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only" name="prepare_time" type="radio" value="5s"/>
+<div class="flex h-10 items-center justify-center rounded-lg text-sm font-medium text-slate-500 transition-all hover:text-slate-900 peer-checked:bg-primary peer-checked:text-white dark:text-slate-400 dark:hover:text-white">
+                                5s
+                            </div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input checked="" class="peer sr-only" name="prepare_time" type="radio" value="10s"/>
+<div class="flex h-10 items-center justify-center rounded-lg text-sm font-medium text-slate-500 transition-all hover:text-slate-900 peer-checked:bg-primary peer-checked:text-white dark:text-slate-400 dark:hover:text-white">
+                                10s
+                            </div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only" name="prepare_time" type="radio" value="15s"/>
+<div class="flex h-10 items-center justify-center rounded-lg text-sm font-medium text-slate-500 transition-all hover:text-slate-900 peer-checked:bg-primary peer-checked:text-white dark:text-slate-400 dark:hover:text-white">
+                                15s
+                            </div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only" name="prepare_time" type="radio" value="30s"/>
+<div class="flex h-10 items-center justify-center rounded-lg text-sm font-medium text-slate-500 transition-all hover:text-slate-900 peer-checked:bg-primary peer-checked:text-white dark:text-slate-400 dark:hover:text-white">
+                                30s
+                            </div>
+</label>
+</div>
+</div>
+<p class="mt-2 text-xs text-slate-500 dark:text-slate-400">Time to relax before the breathing cycle begins.</p>
+</section>
+<hr class="my-6 border-slate-200 dark:border-slate-800 mx-4"/>
+<!-- Breathing Speed Section -->
+<section class="px-4">
+<h3 class="mb-3 text-base font-bold text-slate-900 dark:text-white">Breathing Speed</h3>
+<div class="rounded-xl bg-white p-1 shadow-sm ring-1 ring-slate-200 dark:bg-slate-800 dark:ring-slate-700">
+<div class="flex">
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only" name="speed" type="radio" value="slow"/>
+<div class="flex h-10 items-center justify-center rounded-lg text-sm font-medium text-slate-500 transition-all hover:text-slate-900 peer-checked:bg-primary peer-checked:text-white dark:text-slate-400 dark:hover:text-white">
+                                Slow
+                            </div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input checked="" class="peer sr-only" name="speed" type="radio" value="normal"/>
+<div class="flex h-10 items-center justify-center rounded-lg text-sm font-medium text-slate-500 transition-all hover:text-slate-900 peer-checked:bg-primary peer-checked:text-white dark:text-slate-400 dark:hover:text-white">
+                                Normal
+                            </div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only" name="speed" type="radio" value="fast"/>
+<div class="flex h-10 items-center justify-center rounded-lg text-sm font-medium text-slate-500 transition-all hover:text-slate-900 peer-checked:bg-primary peer-checked:text-white dark:text-slate-400 dark:hover:text-white">
+                                Fast
+                            </div>
+</label>
+</div>
+</div>
+<p class="mt-2 text-xs text-slate-500 dark:text-slate-400">Adjust the rhythm of the inhale and exhale phases.</p>
+</section>
+<hr class="my-6 border-slate-200 dark:border-slate-800 mx-4"/>
+<!-- Default Breath Count Section -->
+<section class="px-4">
+<h3 class="mb-3 text-base font-bold text-slate-900 dark:text-white">Default Breath Count</h3>
+<div class="rounded-xl bg-white p-1 shadow-sm ring-1 ring-slate-200 dark:bg-slate-800 dark:ring-slate-700 overflow-x-auto">
+<div class="flex min-w-max">
+<label class="cursor-pointer">
+<input class="peer sr-only" name="count" type="radio" value="10"/>
+<div class="flex h-10 w-14 items-center justify-center rounded-lg text-sm font-medium text-slate-500 transition-all hover:text-slate-900 peer-checked:bg-primary peer-checked:text-white dark:text-slate-400 dark:hover:text-white">
+                                10
+                            </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="count" type="radio" value="20"/>
+<div class="flex h-10 w-14 items-center justify-center rounded-lg text-sm font-medium text-slate-500 transition-all hover:text-slate-900 peer-checked:bg-primary peer-checked:text-white dark:text-slate-400 dark:hover:text-white">
+                                20
+                            </div>
+</label>
+<label class="cursor-pointer">
+<input checked="" class="peer sr-only" name="count" type="radio" value="30"/>
+<div class="flex h-10 w-14 items-center justify-center rounded-lg text-sm font-medium text-slate-500 transition-all hover:text-slate-900 peer-checked:bg-primary peer-checked:text-white dark:text-slate-400 dark:hover:text-white">
+                                30
+                            </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="count" type="radio" value="40"/>
+<div class="flex h-10 w-14 items-center justify-center rounded-lg text-sm font-medium text-slate-500 transition-all hover:text-slate-900 peer-checked:bg-primary peer-checked:text-white dark:text-slate-400 dark:hover:text-white">
+                                40
+                            </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="count" type="radio" value="50"/>
+<div class="flex h-10 w-14 items-center justify-center rounded-lg text-sm font-medium text-slate-500 transition-all hover:text-slate-900 peer-checked:bg-primary peer-checked:text-white dark:text-slate-400 dark:hover:text-white">
+                                50
+                            </div>
+</label>
+</div>
+</div>
+<p class="mt-2 text-xs text-slate-500 dark:text-slate-400">Total number of breaths per session.</p>
+</section>
+</div>
+<!-- Bottom Navigation -->
+<div class="fixed bottom-0 left-0 right-0 z-20 border-t border-slate-200 bg-white/95 px-4 pb-6 pt-2 backdrop-blur-md dark:border-slate-800 dark:bg-background-dark/95">
+<div class="flex items-center justify-between gap-2">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">spa</span>
+<p class="text-xs font-medium leading-none">Breathe</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-slate-400 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">bar_chart</span>
+<p class="text-xs font-medium leading-none">Stats</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined text-[24px] font-variation-settings-fill">settings</span>
+<p class="text-xs font-medium leading-none">Settings</p>
+</a>
+</div>
+</div>
+</div>
+<!-- Style for Material Symbols filled state -->
+<style>
+        .font-variation-settings-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</body></html>

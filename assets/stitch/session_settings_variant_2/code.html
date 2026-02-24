@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Session Settings - Variant 2</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "sans": ["Inter", "sans-serif"],
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display antialiased selection:bg-primary selection:text-white">
+<div class="relative flex min-h-screen w-full flex-col overflow-hidden bg-slate-950">
+<!-- Background Gradient -->
+<div class="absolute inset-0 bg-gradient-to-b from-primary/20 via-slate-950 to-slate-950 z-0 pointer-events-none"></div>
+<!-- Glassmorphism Orbs for effect -->
+<div class="absolute -top-20 -right-20 w-64 h-64 bg-primary/30 rounded-full blur-3xl z-0 pointer-events-none opacity-50"></div>
+<div class="absolute top-1/3 -left-20 w-80 h-80 bg-blue-600/20 rounded-full blur-3xl z-0 pointer-events-none opacity-30"></div>
+<!-- Header -->
+<div class="relative z-10 flex items-center justify-between px-6 pt-12 pb-4">
+<button class="flex items-center justify-center w-10 h-10 rounded-full bg-slate-800/50 hover:bg-slate-700/50 backdrop-blur-md text-white transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="text-xl font-bold tracking-tight text-white">Session Settings</h1>
+<div class="w-10"></div> <!-- Spacer for alignment -->
+</div>
+<!-- Content Area -->
+<div class="relative z-10 flex-1 px-6 py-6 flex flex-col gap-6 overflow-y-auto">
+<!-- Prepare Time Card -->
+<div class="flex flex-col gap-4 p-6 rounded-2xl bg-slate-900/40 backdrop-blur-xl border border-white/10 shadow-xl">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center w-10 h-10 rounded-full bg-primary/20 text-primary">
+<span class="material-symbols-outlined text-xl">timer</span>
+</div>
+<div>
+<h3 class="text-base font-semibold text-white">Prepare Time</h3>
+<p class="text-xs text-slate-400">Delay before starting</p>
+</div>
+</div>
+<span class="text-2xl font-bold text-white">15<span class="text-sm font-medium text-slate-400 ml-1">s</span></span>
+</div>
+<div class="pt-4 pb-2">
+<div class="relative w-full h-2 bg-slate-700/50 rounded-full">
+<div class="absolute top-0 left-0 h-full w-[25%] bg-primary rounded-full"></div>
+<div class="absolute top-1/2 left-[25%] w-6 h-6 -mt-3 -ml-3 bg-white rounded-full shadow-lg border-2 border-primary cursor-pointer hover:scale-110 transition-transform"></div>
+</div>
+<div class="flex justify-between mt-2 text-xs font-medium text-slate-500">
+<span>0s</span>
+<span>60s</span>
+</div>
+</div>
+</div>
+<!-- Breath Count Card -->
+<div class="flex flex-col gap-4 p-6 rounded-2xl bg-slate-900/40 backdrop-blur-xl border border-white/10 shadow-xl">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center w-10 h-10 rounded-full bg-primary/20 text-primary">
+<span class="material-symbols-outlined text-xl">air</span>
+</div>
+<div>
+<h3 class="text-base font-semibold text-white">Breath Count</h3>
+<p class="text-xs text-slate-400">Cycles per session</p>
+</div>
+</div>
+<span class="text-2xl font-bold text-white">30</span>
+</div>
+<div class="pt-4 pb-2">
+<div class="relative w-full h-2 bg-slate-700/50 rounded-full">
+<div class="absolute top-0 left-0 h-full w-[50%] bg-primary rounded-full"></div>
+<div class="absolute top-1/2 left-[50%] w-6 h-6 -mt-3 -ml-3 bg-white rounded-full shadow-lg border-2 border-primary cursor-pointer hover:scale-110 transition-transform"></div>
+</div>
+<div class="flex justify-between mt-2 text-xs font-medium text-slate-500">
+<span>10</span>
+<span>60</span>
+</div>
+</div>
+</div>
+<!-- Breathing Speed -->
+<div class="flex flex-col gap-4 p-6 rounded-2xl bg-slate-900/40 backdrop-blur-xl border border-white/10 shadow-xl">
+<div class="flex items-center gap-3 mb-2">
+<div class="flex items-center justify-center w-10 h-10 rounded-full bg-primary/20 text-primary">
+<span class="material-symbols-outlined text-xl">speed</span>
+</div>
+<div>
+<h3 class="text-base font-semibold text-white">Breathing Pace</h3>
+<p class="text-xs text-slate-400">Rhythm intensity</p>
+</div>
+</div>
+<div class="flex bg-slate-800/50 p-1.5 rounded-full backdrop-blur-sm">
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only" name="speed" type="radio" value="slow"/>
+<div class="flex items-center justify-center px-4 py-2.5 rounded-full text-sm font-medium text-slate-400 transition-all peer-checked:bg-primary peer-checked:text-white peer-checked:shadow-lg hover:text-slate-200">
+                            Slow
+                        </div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input checked="" class="peer sr-only" name="speed" type="radio" value="normal"/>
+<div class="flex items-center justify-center px-4 py-2.5 rounded-full text-sm font-medium text-slate-400 transition-all peer-checked:bg-primary peer-checked:text-white peer-checked:shadow-lg hover:text-slate-200">
+                            Normal
+                        </div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only" name="speed" type="radio" value="fast"/>
+<div class="flex items-center justify-center px-4 py-2.5 rounded-full text-sm font-medium text-slate-400 transition-all peer-checked:bg-primary peer-checked:text-white peer-checked:shadow-lg hover:text-slate-200">
+                            Fast
+                        </div>
+</label>
+</div>
+</div>
+<!-- Additional Toggles (Sound/Vibration) -->
+<div class="flex flex-col gap-4 p-6 rounded-2xl bg-slate-900/40 backdrop-blur-xl border border-white/10 shadow-xl">
+<h3 class="text-base font-semibold text-white mb-2">Feedback</h3>
+<div class="flex items-center justify-between py-2 border-b border-white/5">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">volume_up</span>
+<span class="text-sm font-medium text-slate-200">Sound Effects</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-slate-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between py-2">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">toggle_on</span>
+<span class="text-sm font-medium text-slate-200">Haptics</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-slate-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation -->
+<div class="relative z-20 flex gap-2 border-t border-white/5 bg-slate-900/80 backdrop-blur-lg px-4 pb-6 pt-2">
+<a class="flex flex-1 flex-col items-center justify-end gap-1 rounded-full text-white/50 hover:text-white transition-colors group" href="#">
+<div class="flex h-8 items-center justify-center rounded-xl px-4 py-1 group-hover:bg-white/5">
+<span class="material-symbols-outlined text-[24px]">air</span>
+</div>
+<p class="text-[10px] font-medium leading-normal tracking-wide">Breathe</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-white/50 hover:text-white transition-colors group" href="#">
+<div class="flex h-8 items-center justify-center rounded-xl px-4 py-1 group-hover:bg-white/5">
+<span class="material-symbols-outlined text-[24px]">history</span>
+</div>
+<p class="text-[10px] font-medium leading-normal tracking-wide">History</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-white/50 hover:text-white transition-colors group" href="#">
+<div class="flex h-8 items-center justify-center rounded-xl px-4 py-1 group-hover:bg-white/5">
+<span class="material-symbols-outlined text-[24px]">bar_chart</span>
+</div>
+<p class="text-[10px] font-medium leading-normal tracking-wide">Insights</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-primary group" href="#">
+<div class="flex h-8 items-center justify-center bg-primary/10 rounded-xl px-4 py-1">
+<span class="material-symbols-outlined text-[24px] fill-current">settings</span>
+</div>
+<p class="text-[10px] font-medium leading-normal tracking-wide">Settings</p>
+</a>
+</div>
+</div>
+</body></html>

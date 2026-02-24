@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+
+# Build artifacts
+public/app.js
+
+# Deno cache
+.deno/
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Design asset archives (redundant with extracted folder)
+assets/*.zip
+
+# Environment
+.env
+.env.*
