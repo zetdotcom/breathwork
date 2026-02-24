@@ -9,6 +9,7 @@ import "../shared/phase-stepper.ts";
  *
  * - Large circle displaying "TIME ELAPSED" label + MM:SS.cs timer.
  * - Blue glow effect on circle border.
+ * - Ticked clock-style border that fills per second and adds a new ring each minute.
  * - Below circle: "Retention Phase" heading + guidance text.
  * - Prominent blue CTA: "I NEED TO INHALE" button — ends retention, starts recovery.
  * - Phase stepper at bottom with RETENTION active.
@@ -77,6 +78,62 @@ TEMPLATE.innerHTML = `
       justify-content: center;
       gap: 6px;
       box-shadow: var(--glow-primary, 0 0 40px -10px rgba(19, 127, 236, 0.4));
+    }
+
+    .tick-rings {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .tick-ring {
+      --ring-offset: 0px;
+      --ring-thickness: 4px;
+      --start-angle: 0deg;
+      --active-angle: 0deg;
+      --tick-color: rgba(148, 163, 184, 0.35);
+      --active-color: var(--color-primary, #137fec);
+      position: absolute;
+      inset: calc(-6px - var(--ring-offset));
+      border-radius: 50%;
+      background: repeating-conic-gradient(
+        from var(--start-angle),
+        var(--tick-color) 0deg 3.6deg,
+        transparent 3.6deg 6deg
+      );
+      -webkit-mask: radial-gradient(
+        farthest-side,
+        transparent calc(100% - var(--ring-thickness)),
+        #000 calc(100% - var(--ring-thickness))
+      );
+      mask: radial-gradient(
+        farthest-side,
+        transparent calc(100% - var(--ring-thickness)),
+        #000 calc(100% - var(--ring-thickness))
+      );
+    }
+
+    .tick-ring::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(
+        from var(--start-angle),
+        var(--active-color) 0deg var(--active-angle),
+        transparent var(--active-angle) 360deg
+      );
+      -webkit-mask: repeating-conic-gradient(
+        from var(--start-angle),
+        #000 0deg 3.6deg,
+        transparent 3.6deg 6deg
+      );
+      mask: repeating-conic-gradient(
+        from var(--start-angle),
+        #000 0deg 3.6deg,
+        transparent 3.6deg 6deg
+      );
     }
 
     /* Inner decorative ring */
@@ -191,6 +248,7 @@ TEMPLATE.innerHTML = `
     <div class="circle-area">
       <div class="glow"></div>
       <div class="timer-circle">
+        <div class="tick-rings" id="tick-rings" aria-hidden="true"></div>
         <span class="elapsed-label">TIME ELAPSED</span>
         <div class="timer-value">
           <span class="timer-main" id="timer-main">00:00</span>
@@ -219,6 +277,7 @@ export class RetentionScreen extends HTMLElement {
   #timerMain: HTMLElement | null = null;
   #timerCs: HTMLElement | null = null;
   #inhaleBtn: HTMLButtonElement | null = null;
+  #tickRings: HTMLElement | null = null;
   #cleanups: (() => void)[] = [];
 
   constructor() {
@@ -228,7 +287,10 @@ export class RetentionScreen extends HTMLElement {
 
     this.#timerMain = this.#root.getElementById("timer-main");
     this.#timerCs = this.#root.getElementById("timer-cs");
-    this.#inhaleBtn = this.#root.getElementById("inhale-btn") as HTMLButtonElement | null;
+    this.#inhaleBtn = this.#root.getElementById(
+      "inhale-btn",
+    ) as HTMLButtonElement | null;
+    this.#tickRings = this.#root.getElementById("tick-rings");
   }
 
   connectedCallback() {
@@ -259,6 +321,34 @@ export class RetentionScreen extends HTMLElement {
     if (this.#timerCs) {
       this.#timerCs.textContent = `.${formatCentiseconds(elapsedMs)}`;
     }
+    this.#updateTickRings(elapsedMs);
+  }
+
+  #updateTickRings(elapsedMs: number) {
+    if (!this.#tickRings) return;
+
+    const totalSeconds = Math.floor(elapsedMs / 1000);
+    const fullMinutes = Math.floor(totalSeconds / 60);
+    const secondsInMinute = totalSeconds % 60;
+    const requiredRings = fullMinutes + 1;
+
+    while (this.#tickRings.children.length < requiredRings) {
+      const ring = document.createElement("div");
+      ring.className = "tick-ring";
+      this.#tickRings.appendChild(ring);
+    }
+
+    while (this.#tickRings.children.length > requiredRings) {
+      this.#tickRings.lastElementChild?.remove();
+    }
+
+    const ringSpacing = 6;
+    Array.from(this.#tickRings.children).forEach((child, index) => {
+      const ring = child as HTMLElement;
+      const activeSeconds = index < fullMinutes ? 60 : secondsInMinute;
+      ring.style.setProperty("--active-angle", `${activeSeconds * 6}deg`);
+      ring.style.setProperty("--ring-offset", `${index * ringSpacing}px`);
+    });
   }
 
   #handleInhale = () => {

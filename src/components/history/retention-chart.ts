@@ -56,24 +56,54 @@ TEMPLATE.innerHTML = `
       padding: 24px 20px 16px;
       position: relative;
       overflow: hidden;
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+    }
+
+    .y-axis {
+      width: 34px;
+      height: 120px;
+      position: relative;
+      flex-shrink: 0;
+      color: var(--color-text-dim, #64748b);
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .y-label {
+      position: absolute;
+      left: 0;
+      transform: translateY(-50%);
+      white-space: nowrap;
+    }
+
+    .y-label.is-bottom {
+      transform: translateY(50%);
+    }
+
+    .chart-inner {
+      position: relative;
+      flex: 1;
     }
 
     /* Dotted baseline decorations */
-    .chart-container::before,
-    .chart-container::after {
+    .chart-inner::before,
+    .chart-inner::after {
       content: "";
       position: absolute;
-      left: 20px;
-      right: 20px;
+      left: 0;
+      right: 0;
       border-top: 1px dashed rgba(100, 116, 139, 0.25);
       pointer-events: none;
     }
 
-    .chart-container::before {
+    .chart-inner::before {
       top: 33%;
     }
 
-    .chart-container::after {
+    .chart-inner::after {
       top: 55%;
     }
 
@@ -182,7 +212,10 @@ TEMPLATE.innerHTML = `
       <span class="period">Last 7 Days</span>
     </div>
     <div class="chart-container">
-      <div class="bars" id="bars"></div>
+      <div class="y-axis" id="y-axis"></div>
+      <div class="chart-inner">
+        <div class="bars" id="bars"></div>
+      </div>
     </div>
   </div>
 `;
@@ -190,6 +223,7 @@ TEMPLATE.innerHTML = `
 export class RetentionChart extends HTMLElement {
   #root: ShadowRoot;
   #barsEl: HTMLElement | null = null;
+  #yAxisEl: HTMLElement | null = null;
   #unsubscribe: (() => void) | null = null;
 
   constructor() {
@@ -197,6 +231,7 @@ export class RetentionChart extends HTMLElement {
     this.#root = this.attachShadow({ mode: "open" });
     this.#root.appendChild(TEMPLATE.content.cloneNode(true));
     this.#barsEl = this.#root.getElementById("bars");
+    this.#yAxisEl = this.#root.getElementById("y-axis");
   }
 
   connectedCallback() {
@@ -229,11 +264,22 @@ export class RetentionChart extends HTMLElement {
       this.#barsEl.innerHTML = `
         <div class="empty-state" style="width:100%">No sessions in the last 7 days</div>
       `;
+      if (this.#yAxisEl) this.#yAxisEl.innerHTML = "";
       return;
     }
 
     const today = new Date();
     const todayDow = today.getDay(); // 0=Sun
+
+    const maxSec = Math.max(1, Math.round(maxMs / 1000));
+    const midSec = Math.round(maxSec / 2);
+    if (this.#yAxisEl) {
+      this.#yAxisEl.innerHTML = `
+        <span class="y-label" style="top: 0%">${maxSec}s</span>
+        <span class="y-label" style="top: 50%">${midSec}s</span>
+        <span class="y-label is-bottom" style="top: 100%">0s</span>
+      `;
+    }
 
     let html = "";
 
