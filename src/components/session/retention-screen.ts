@@ -201,7 +201,7 @@ TEMPLATE.innerHTML = `
 
     <div class="info">
       <h1>Retention Phase</h1>
-      <p>Hold your breath comfortably. Focus on the stillness within.</p>
+      <p>Exhale fully, let go, then hold your breath. Stay relaxed and still until you need to inhale.</p>
     </div>
 
     <div class="cta-wrapper">
