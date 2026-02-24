@@ -1,5 +1,5 @@
 import { appStore } from "../../core/store.ts";
-import { sessionEngine } from "../../core/breathing-engine.ts";
+
 import { formatCountdownSeconds } from "../../utils/time.ts";
 import "../shared/session-header.ts";
 import "../shared/phase-stepper.ts";
@@ -9,9 +9,8 @@ import "../shared/phase-stepper.ts";
  *
  * - 15s countdown displayed in a large circle (same layout as retention).
  * - Phase stepper at bottom with RECOVERY active.
- * - "Finish Session" button to end after this round instead of auto-looping.
  * - Auto-transitions to next round's breathing phase when countdown reaches 0
- *   (handled by the engine), or to summary if the user clicked "Finish Session".
+ *   (handled by the engine).
  *
  * Ref: similar circle layout to `stitch/retention_hold_timer/screen.png`
  */
@@ -138,46 +137,7 @@ TEMPLATE.innerHTML = `
       margin: 0;
     }
 
-    /* ── Finish button ── */
-    .actions {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-    }
 
-    .finish-btn {
-      width: 100%;
-      max-width: 320px;
-      height: 48px;
-      background: transparent;
-      color: var(--color-text-muted, #94a3b8);
-      border: 1px solid var(--color-border-dark, #334155);
-      border-radius: var(--radius-md, 0.75rem);
-      font-size: 14px;
-      font-weight: 600;
-      font-family: var(--font-family, "Inter", system-ui, sans-serif);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: background 200ms ease, color 200ms ease, border-color 200ms ease;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .finish-btn:hover {
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--color-text, #f1f5f9);
-      border-color: var(--color-text-muted, #94a3b8);
-    }
-
-    .finish-btn:active {
-      transform: scale(0.97);
-    }
-
-    .finish-btn[data-requested] {
-      color: var(--color-primary, #137fec);
-      border-color: var(--color-primary, #137fec);
-      pointer-events: none;
-    }
 
     /* ── Bottom ── */
     .bottom {
@@ -203,9 +163,7 @@ TEMPLATE.innerHTML = `
       <p>Inhale deeply and hold. Relax and let your body recover.</p>
     </div>
 
-    <div class="actions">
-      <button class="finish-btn" id="finish-btn">Finish Session</button>
-    </div>
+
   </div>
 
   <div class="bottom">
@@ -216,7 +174,6 @@ TEMPLATE.innerHTML = `
 export class RecoveryScreen extends HTMLElement {
   #root: ShadowRoot;
   #countdownValue: HTMLElement | null = null;
-  #finishBtn: HTMLButtonElement | null = null;
   #cleanups: (() => void)[] = [];
 
   constructor() {
@@ -225,7 +182,6 @@ export class RecoveryScreen extends HTMLElement {
     this.#root.appendChild(TEMPLATE.content.cloneNode(true));
 
     this.#countdownValue = this.#root.getElementById("countdown-value");
-    this.#finishBtn = this.#root.getElementById("finish-btn") as HTMLButtonElement | null;
   }
 
   connectedCallback() {
@@ -236,15 +192,11 @@ export class RecoveryScreen extends HTMLElement {
     );
     this.#cleanups.push(unsubRecovery);
 
-    // Finish button
-    this.#finishBtn?.addEventListener("click", this.#handleFinish);
-
     // Set initial state
     this.#updateCountdown(appStore.getState().recoveryRemainingMs);
   }
 
   disconnectedCallback() {
-    this.#finishBtn?.removeEventListener("click", this.#handleFinish);
     for (const cleanup of this.#cleanups) cleanup();
     this.#cleanups = [];
   }
@@ -254,17 +206,6 @@ export class RecoveryScreen extends HTMLElement {
       this.#countdownValue.textContent = formatCountdownSeconds(remainingMs);
     }
   }
-
-  #handleFinish = () => {
-    // Signal the engine to go to summary after recovery completes
-    sessionEngine.finishSession();
-
-    // Visual feedback that finish was requested
-    this.#finishBtn?.setAttribute("data-requested", "");
-    if (this.#finishBtn) {
-      this.#finishBtn.textContent = "Finishing…";
-    }
-  };
 }
 
 customElements.define("recovery-screen", RecoveryScreen);

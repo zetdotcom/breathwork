@@ -10,6 +10,7 @@ import "../shared/session-header.ts";
  * Shows:
  *   - Total session time
  *   - Number of rounds completed
+ *   - Total breaths
  *   - Best retention time
  *   - Per-round retention list
  *   - "Finish" button (return to idle)
@@ -90,7 +91,8 @@ TEMPLATE.innerHTML = `
     /* ── Stats grid ── */
     .stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      grid-auto-flow: row;
       gap: 12px;
       width: 100%;
       max-width: 360px;
@@ -112,14 +114,18 @@ TEMPLATE.innerHTML = `
     }
 
     .stat-value {
+      display: block;
+      width: 100%;
       font-size: 24px;
       font-weight: 700;
       font-variant-numeric: tabular-nums;
       letter-spacing: -0.02em;
       color: var(--color-text, #f1f5f9);
       max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      line-height: 1.2;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .stat-label {
@@ -253,6 +259,10 @@ TEMPLATE.innerHTML = `
         <span class="stat-label">Rounds</span>
       </div>
       <div class="stat">
+        <span class="stat-value" id="stat-breaths">0</span>
+        <span class="stat-label">Breaths</span>
+      </div>
+      <div class="stat">
         <span class="stat-value" id="stat-best">00:00.00</span>
         <span class="stat-label">Best Hold</span>
       </div>
@@ -273,6 +283,7 @@ export class SessionSummary extends HTMLElement {
   #root: ShadowRoot;
   #statTime: HTMLElement | null = null;
   #statRounds: HTMLElement | null = null;
+  #statBreaths: HTMLElement | null = null;
   #statBest: HTMLElement | null = null;
   #roundList: HTMLElement | null = null;
   #finishBtn: HTMLButtonElement | null = null;
@@ -285,6 +296,7 @@ export class SessionSummary extends HTMLElement {
 
     this.#statTime = this.#root.getElementById("stat-time");
     this.#statRounds = this.#root.getElementById("stat-rounds");
+    this.#statBreaths = this.#root.getElementById("stat-breaths");
     this.#statBest = this.#root.getElementById("stat-best");
     this.#roundList = this.#root.getElementById("round-list");
     this.#finishBtn = this.#root.getElementById(
@@ -324,6 +336,12 @@ export class SessionSummary extends HTMLElement {
     // Rounds count
     if (this.#statRounds) {
       this.#statRounds.textContent = String(rounds.length);
+    }
+
+    // Breaths count
+    const totalBreaths = rounds.reduce((sum, r) => sum + r.breathCount, 0);
+    if (this.#statBreaths) {
+      this.#statBreaths.textContent = String(totalBreaths);
     }
 
     // Best retention
