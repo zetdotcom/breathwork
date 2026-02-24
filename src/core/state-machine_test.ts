@@ -47,8 +47,12 @@ Deno.test("canTransition: retention → breathing is invalid", () => {
   assertEquals(canTransition("retention", "breathing"), false);
 });
 
-Deno.test("canTransition: recovery → breathing is valid (next round)", () => {
-  assertEquals(canTransition("recovery", "breathing"), true);
+Deno.test("canTransition: recovery → breathing is invalid (must go via round-break)", () => {
+  assertEquals(canTransition("recovery", "breathing"), false);
+});
+
+Deno.test("canTransition: recovery → round-break is valid", () => {
+  assertEquals(canTransition("recovery", "round-break"), true);
 });
 
 Deno.test("canTransition: recovery → summary is valid (finish)", () => {
@@ -57,6 +61,18 @@ Deno.test("canTransition: recovery → summary is valid (finish)", () => {
 
 Deno.test("canTransition: recovery → idle is invalid", () => {
   assertEquals(canTransition("recovery", "idle"), false);
+});
+
+Deno.test("canTransition: round-break → breathing is valid", () => {
+  assertEquals(canTransition("round-break", "breathing"), true);
+});
+
+Deno.test("canTransition: round-break → summary is valid", () => {
+  assertEquals(canTransition("round-break", "summary"), true);
+});
+
+Deno.test("canTransition: round-break → idle is invalid", () => {
+  assertEquals(canTransition("round-break", "idle"), false);
 });
 
 Deno.test("canTransition: summary → idle is valid", () => {
@@ -72,8 +88,10 @@ Deno.test("transition: returns new phase on valid transition", () => {
   assertEquals(transition("prepare", "breathing"), "breathing");
   assertEquals(transition("breathing", "retention"), "retention");
   assertEquals(transition("retention", "recovery"), "recovery");
-  assertEquals(transition("recovery", "breathing"), "breathing");
+  assertEquals(transition("recovery", "round-break"), "round-break");
   assertEquals(transition("recovery", "summary"), "summary");
+  assertEquals(transition("round-break", "breathing"), "breathing");
+  assertEquals(transition("round-break", "summary"), "summary");
   assertEquals(transition("summary", "idle"), "idle");
 });
 
@@ -89,8 +107,15 @@ Deno.test("nextPhases: idle can go to prepare", () => {
   assertEquals(nextPhases("idle"), ["prepare"]);
 });
 
-Deno.test("nextPhases: recovery can go to breathing or summary", () => {
+Deno.test("nextPhases: recovery can go to round-break or summary", () => {
   const phases = nextPhases("recovery");
+  assertEquals(phases.includes("round-break"), true);
+  assertEquals(phases.includes("summary"), true);
+  assertEquals(phases.length, 2);
+});
+
+Deno.test("nextPhases: round-break can go to breathing or summary", () => {
+  const phases = nextPhases("round-break");
   assertEquals(phases.includes("breathing"), true);
   assertEquals(phases.includes("summary"), true);
   assertEquals(phases.length, 2);

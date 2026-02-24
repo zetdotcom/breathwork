@@ -6,6 +6,7 @@ export type SessionPhase =
   | "breathing"
   | "retention"
   | "recovery"
+  | "round-break"
   | "summary";
 
 export type BreathDirection = "inhale" | "exhale";
@@ -58,6 +59,7 @@ export type AppState = {
   breathProgress: number; // 0→1 within current half-cycle (inhale or exhale)
   retentionElapsedMs: number;
   recoveryRemainingMs: number;
+  roundBreakRemainingMs: number;
   currentRound: number;
   rounds: RoundRecord[];
   sessionStartedAt: string | null; // ISO 8601
@@ -89,6 +91,7 @@ export const initialState: AppState = {
   breathProgress: 0,
   retentionElapsedMs: 0,
   recoveryRemainingMs: 15_000,
+  roundBreakRemainingMs: 10_000,
   currentRound: 0,
   rounds: [],
   sessionStartedAt: null,

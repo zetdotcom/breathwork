@@ -24,6 +24,7 @@ const HALF_CYCLE_MS: Record<Speed, number> = {
 };
 
 const RECOVERY_DURATION_MS = 15_000;
+const ROUND_BREAK_DURATION_MS = 10_000;
 
 // ── Pure computation (testable) ─────────────────────────────────────
 
@@ -125,6 +126,7 @@ export class SessionEngine {
         prepareRemainingMs: settings.prepareSeconds * 1000,
         retentionElapsedMs: 0,
         recoveryRemainingMs: RECOVERY_DURATION_MS,
+        roundBreakRemainingMs: ROUND_BREAK_DURATION_MS,
         targetBreathCount: settings.breathCount,
         sessionStartedAt: new Date().toISOString(),
       },
@@ -147,6 +149,7 @@ export class SessionEngine {
         prepareRemainingMs: 0,
         retentionElapsedMs: 0,
         recoveryRemainingMs: RECOVERY_DURATION_MS,
+        roundBreakRemainingMs: ROUND_BREAK_DURATION_MS,
         sessionStartedAt: null,
       },
       { source: "SessionEngine", action: "STOP_SESSION" },
@@ -199,6 +202,10 @@ export class SessionEngine {
       // Let recovery finish, then go to summary instead of next round.
       // We signal this by setting a flag — checked in #onRecoveryComplete.
       this.#finishRequested = true;
+    } else if (state.phase === "round-break") {
+      // During round-break, immediately go to summary.
+      this.#stopActiveLoop();
+      this.#goToSummary();
     } else if (state.phase === "summary") {
       // Already at summary — transition to idle.
       this.#stopActiveLoop();
@@ -216,6 +223,16 @@ export class SessionEngine {
   /** Start another round from the summary screen. */
   startNextRound(): void {
     if (appStore.getState().phase !== "summary") return;
+    this.#startBreathing();
+  }
+
+  /**
+   * Skip the round-break countdown and start the next round immediately.
+   * Only works during the round-break phase.
+   */
+  skipRoundBreak(): void {
+    if (appStore.getState().phase !== "round-break") return;
+    this.#stopActiveLoop();
     this.#startBreathing();
   }
 
@@ -259,7 +276,9 @@ export class SessionEngine {
         ? state.currentRound + 1
         : state.phase === "recovery"
           ? state.currentRound + 1
-          : state.currentRound;
+          : state.phase === "round-break"
+            ? state.currentRound + 1
+            : state.currentRound;
 
     appStore.setState(
       {
@@ -379,14 +398,43 @@ export class SessionEngine {
       { source: "SessionEngine", action: "RECORD_ROUND" },
     );
 
-    // Decide: next round or summary?
+    // Decide: summary or round-break (prepare for next round)?
     if (this.#finishRequested) {
       this.#finishRequested = false;
       this.#goToSummary();
     } else {
-      // Auto-start next round
-      this.#startBreathing();
+      // Transition to round-break countdown before next round
+      this.#startRoundBreak();
     }
+  }
+
+  #startRoundBreak(): void {
+    this.#stopActiveLoop();
+
+    appStore.setState(
+      {
+        phase: "round-break",
+        roundBreakRemainingMs: ROUND_BREAK_DURATION_MS,
+      },
+      { source: "SessionEngine", action: "START_ROUND_BREAK" },
+    );
+
+    this.#activeLoop = createCountdown(
+      ROUND_BREAK_DURATION_MS,
+      {
+        onTick: (remaining) => {
+          appStore.setState(
+            { roundBreakRemainingMs: remaining },
+            { source: "SessionEngine", action: "ROUND_BREAK_TICK" },
+          );
+        },
+        onComplete: () => {
+          this.#startBreathing();
+        },
+      },
+      this.#now,
+    );
+    this.#activeLoop.start();
   }
 
   #goToSummary(): void {

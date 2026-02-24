@@ -30,6 +30,8 @@ function phaseIndex(phase: SessionPhase): number {
       return 1;
     case "recovery":
       return 2;
+    case "round-break":
+      return 3; // all steps completed
     default:
       return -1;
   }

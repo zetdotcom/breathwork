@@ -10,6 +10,7 @@ import "../components/session/prepare-screen.ts";
 import "../components/session/breathing-screen.ts";
 import "../components/session/retention-screen.ts";
 import "../components/session/recovery-screen.ts";
+import "../components/session/round-break-screen.ts";
 import "../components/session/session-summary.ts";
 
 // Import tab screen components
@@ -26,6 +27,7 @@ const PHASE_SCREEN_TAG: Partial<Record<SessionPhase, string>> = {
   breathing: "breathing-screen",
   retention: "retention-screen",
   recovery: "recovery-screen",
+  "round-break": "round-break-screen",
   summary: "session-summary",
 };
 

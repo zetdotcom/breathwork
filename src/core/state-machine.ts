@@ -11,8 +11,10 @@ import type { SessionPhase } from "./app-state.ts";
  *   prepare → breathing
  *   breathing → retention
  *   retention → recovery
- *   recovery → breathing (next round)
+ *   recovery → round-break (next round, via countdown)
  *   recovery → summary (user chose to finish)
+ *   round-break → breathing (countdown done or skipped)
+ *   round-break → summary (user chose to finish)
  *   summary → idle
  *
  * Any transition not listed here is invalid and will be rejected.
@@ -23,7 +25,8 @@ const VALID_TRANSITIONS: Record<SessionPhase, readonly SessionPhase[]> = {
   prepare: ["breathing"],
   breathing: ["retention"],
   retention: ["recovery"],
-  recovery: ["breathing", "summary"],
+  recovery: ["round-break", "summary"],
+  "round-break": ["breathing", "summary"],
   summary: ["idle"],
 } as const;
 

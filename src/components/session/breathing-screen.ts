@@ -9,14 +9,10 @@ import "./progress-bar.ts";
  * Breathing phase screen.
  *
  * Assembles: session-header + breath-circle + breath counter + progress-bar
- *            + phase-stepper + "DOUBLE TAP TO SKIP" hint.
- *
- * Handles double-tap detection on the screen body to skip the breathing phase.
+ *            + phase-stepper + "SKIP" button.
  *
  * Ref: `stitch/power_breathing_session/screen.png`
  */
-
-const DOUBLE_TAP_THRESHOLD_MS = 350;
 
 const TEMPLATE = document.createElement("template");
 TEMPLATE.innerHTML = `
@@ -50,6 +46,9 @@ TEMPLATE.innerHTML = `
       display: flex;
       align-items: center;
       justify-content: center;
+      width: min(280px, 65vw);
+      height: min(280px, 65vw);
+      flex-shrink: 0;
     }
 
     /* ── Counter ── */
@@ -107,20 +106,29 @@ TEMPLATE.innerHTML = `
       padding-bottom: 8px;
     }
 
-    .skip-hint {
+    .skip-btn {
       font-size: 12px;
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--color-text-muted, #94a3b8);
+      background: none;
+      border: 1px solid var(--color-border-dark, #334155);
+      border-radius: 8px;
+      padding: 8px 24px;
+      cursor: pointer;
+      transition: opacity 0.15s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .skip-btn:active {
       opacity: 0.6;
-      text-align: center;
     }
   </style>
 
   <session-header></session-header>
 
-  <div class="body" id="tap-area">
+  <div class="body">
     <div class="circle-wrapper">
       <breath-circle></breath-circle>
     </div>
@@ -141,7 +149,7 @@ TEMPLATE.innerHTML = `
 
   <div class="bottom">
     <phase-stepper></phase-stepper>
-    <div class="skip-hint">DOUBLE TAP TO SKIP</div>
+    <button class="skip-btn" id="skip-btn">SKIP</button>
   </div>
 `;
 
@@ -149,8 +157,7 @@ export class BreathingScreen extends HTMLElement {
   #root: ShadowRoot;
   #breathCurrent: HTMLElement | null = null;
   #breathTarget: HTMLElement | null = null;
-  #tapArea: HTMLElement | null = null;
-  #lastTapTime = 0;
+  #skipBtn: HTMLElement | null = null;
   #cleanups: (() => void)[] = [];
 
   constructor() {
@@ -160,7 +167,7 @@ export class BreathingScreen extends HTMLElement {
 
     this.#breathCurrent = this.#root.getElementById("breath-current");
     this.#breathTarget = this.#root.getElementById("breath-target");
-    this.#tapArea = this.#root.getElementById("tap-area");
+    this.#skipBtn = this.#root.getElementById("skip-btn");
   }
 
   connectedCallback() {
@@ -177,8 +184,8 @@ export class BreathingScreen extends HTMLElement {
     );
     this.#cleanups.push(unsubTarget);
 
-    // Double-tap to skip
-    this.#tapArea?.addEventListener("pointerup", this.#handleTap);
+    // Skip button
+    this.#skipBtn?.addEventListener("click", this.#handleSkip);
 
     // Set initial state
     const state = appStore.getState();
@@ -187,7 +194,7 @@ export class BreathingScreen extends HTMLElement {
   }
 
   disconnectedCallback() {
-    this.#tapArea?.removeEventListener("pointerup", this.#handleTap);
+    this.#skipBtn?.removeEventListener("click", this.#handleSkip);
     for (const cleanup of this.#cleanups) cleanup();
     this.#cleanups = [];
   }
@@ -204,15 +211,8 @@ export class BreathingScreen extends HTMLElement {
     }
   }
 
-  #handleTap = () => {
-    const now = performance.now();
-    const delta = now - this.#lastTapTime;
-    this.#lastTapTime = now;
-
-    if (delta < DOUBLE_TAP_THRESHOLD_MS && delta > 0) {
-      this.#lastTapTime = 0; // Reset so triple-tap doesn't re-trigger
-      sessionEngine.skipBreathing();
-    }
+  #handleSkip = () => {
+    sessionEngine.skipBreathing();
   };
 }
 

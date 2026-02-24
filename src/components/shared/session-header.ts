@@ -161,6 +161,7 @@ export class SessionHeader extends HTMLElement {
       breathing: "POWER BREATHING",
       retention: "BREATH HOLD",
       recovery: "RECOVERY",
+      "round-break": "NEXT ROUND",
       summary: "SESSION COMPLETE",
     };
 
