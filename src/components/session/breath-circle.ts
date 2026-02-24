@@ -14,7 +14,7 @@ import type { BreathDirection } from "../../core/app-state.ts";
  * Ref: `stitch/power_breathing_session/screen.png`
  */
 
-const MIN_SCALE = 0.82;
+const MIN_SCALE = 0.8;
 const MAX_SCALE = 1.0;
 
 const TEMPLATE = document.createElement("template");
@@ -138,7 +138,8 @@ export class BreathCircle extends HTMLElement {
     // Subscribe to breath progress for circle scale
     const unsubProgress = appStore.select(
       (s) => s.breathProgress,
-      (progress) => this.#updateScale(progress, appStore.getState().breathDirection),
+      (progress) =>
+        this.#updateScale(progress, appStore.getState().breathDirection),
     );
     this.#cleanups.push(unsubProgress);
 
@@ -183,7 +184,8 @@ export class BreathCircle extends HTMLElement {
       this.#directionText.textContent = direction === "inhale" ? "IN" : "OUT";
     }
     if (this.#directionLabel) {
-      this.#directionLabel.textContent = direction === "inhale" ? "INHALE" : "EXHALE";
+      this.#directionLabel.textContent =
+        direction === "inhale" ? "INHALE" : "EXHALE";
     }
   }
 }
