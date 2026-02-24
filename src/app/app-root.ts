@@ -3,6 +3,7 @@ import { sessionEngine } from "../core/breathing-engine.ts";
 import type { SessionPhase, TabId } from "../core/app-state.ts";
 import { syncRouterWithStore } from "./router.ts";
 import "../components/shared/bottom-nav.ts";
+import "../components/shared/pwa-install-card.ts";
 
 // Import session screen components so their custom elements are registered.
 // Each screen self-registers via customElements.define() on import.
@@ -214,20 +215,21 @@ TEMPLATE.innerHTML = `
 
   <!-- Tab views -->
   <div class="tab-views">
-    <div class="tab-view" data-tab="breathe">
-      <div class="breathe-home">
-        <div class="logo-circle">
-          <span class="icon" aria-hidden="true">spa</span>
-          <span class="ready-text">Ready</span>
-        </div>
-        <h1>Breathwork Trainer</h1>
-        <p class="subtitle">Power breathing to boost your energy and focus.</p>
-        <button class="start-btn" id="start-session-btn">
-          <span class="btn-icon" aria-hidden="true">play_arrow</span>
-          Start Session
-        </button>
+  <div class="tab-view" data-tab="breathe">
+    <div class="breathe-home">
+      <div class="logo-circle">
+        <span class="icon" aria-hidden="true">spa</span>
+        <span class="ready-text">Ready</span>
       </div>
+      <h1>Breathwork Trainer</h1>
+      <p class="subtitle">Power breathing to boost your energy and focus.</p>
+      <pwa-install-card context="home"></pwa-install-card>
+      <button class="start-btn" id="start-session-btn">
+        <span class="btn-icon" aria-hidden="true">play_arrow</span>
+        Start Session
+      </button>
     </div>
+  </div>
 
     <div class="tab-view" data-tab="stats">
       <history-screen></history-screen>
@@ -430,11 +432,10 @@ export class AppRoot extends HTMLElement {
 
   #focusOverlay() {
     if (!this.#sessionOverlay) return;
-    const screen = this.#sessionOverlay.querySelector<HTMLElement>(
-      ".phase-screen",
-    );
-    const focusable = this.#findFocusable(screen) ??
-      this.#findFocusable(this.#sessionOverlay);
+    const screen =
+      this.#sessionOverlay.querySelector<HTMLElement>(".phase-screen");
+    const focusable =
+      this.#findFocusable(screen) ?? this.#findFocusable(this.#sessionOverlay);
     (focusable ?? this.#sessionOverlay).focus?.();
   }
 

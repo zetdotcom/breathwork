@@ -2,6 +2,7 @@ import { appStore } from "../../core/store.ts";
 import type { Settings, Speed } from "../../core/app-state.ts";
 import "../shared/segmented-control.ts";
 import "../shared/toggle-switch.ts";
+import "../shared/pwa-install-card.ts";
 import type { SegmentedControl } from "../shared/segmented-control.ts";
 import type { ToggleSwitch } from "../shared/toggle-switch.ts";
 
@@ -137,6 +138,7 @@ TEMPLATE.innerHTML = `
   </div>
 
   <div class="content">
+    <pwa-install-card context="settings"></pwa-install-card>
     <!-- Prepare Time -->
     <section>
       <h3>Prepare Time</h3>
@@ -188,24 +190,24 @@ export class SettingsScreen extends HTMLElement {
     this.#root = this.attachShadow({ mode: "open" });
     this.#root.appendChild(TEMPLATE.content.cloneNode(true));
 
-    this.#prepareTimeCtrl = this.#root.getElementById("prepare-time") as
-      | SegmentedControl
-      | null;
-    this.#breathingSpeedCtrl = this.#root.getElementById("breathing-speed") as
-      | SegmentedControl
-      | null;
-    this.#breathCountCtrl = this.#root.getElementById("breath-count") as
-      | SegmentedControl
-      | null;
-    this.#soundToggle = this.#root.getElementById("sound-effects") as
-      | ToggleSwitch
-      | null;
-    this.#hapticsToggle = this.#root.getElementById("haptics") as
-      | ToggleSwitch
-      | null;
-    this.#backBtn = this.#root.getElementById("back-btn") as
-      | HTMLButtonElement
-      | null;
+    this.#prepareTimeCtrl = this.#root.getElementById(
+      "prepare-time",
+    ) as SegmentedControl | null;
+    this.#breathingSpeedCtrl = this.#root.getElementById(
+      "breathing-speed",
+    ) as SegmentedControl | null;
+    this.#breathCountCtrl = this.#root.getElementById(
+      "breath-count",
+    ) as SegmentedControl | null;
+    this.#soundToggle = this.#root.getElementById(
+      "sound-effects",
+    ) as ToggleSwitch | null;
+    this.#hapticsToggle = this.#root.getElementById(
+      "haptics",
+    ) as ToggleSwitch | null;
+    this.#backBtn = this.#root.getElementById(
+      "back-btn",
+    ) as HTMLButtonElement | null;
   }
 
   connectedCallback() {
