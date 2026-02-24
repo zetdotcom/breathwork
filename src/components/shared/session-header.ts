@@ -128,7 +128,9 @@ export class SessionHeader extends HTMLElement {
     this.#root = this.attachShadow({ mode: "open" });
     this.#root.appendChild(TEMPLATE.content.cloneNode(true));
 
-    this.#closeBtn = this.#root.getElementById("close-btn") as HTMLButtonElement | null;
+    this.#closeBtn = this.#root.getElementById("close-btn") as
+      | HTMLButtonElement
+      | null;
     this.#titleText = this.#root.getElementById("title-text");
   }
 

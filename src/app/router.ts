@@ -18,7 +18,7 @@ export function parseHash(hash: string): TabId {
  */
 export function navigateTo(tab: TabId): void {
   if (!VALID_TABS.has(tab)) return;
-  window.location.hash = `#${tab}`;
+  globalThis.location.hash = `#${tab}`;
 }
 
 /**
@@ -29,16 +29,16 @@ export function navigateTo(tab: TabId): void {
  */
 export function onRouteChange(callback: (tab: TabId) => void): () => void {
   const handler = () => {
-    callback(parseHash(window.location.hash));
+    callback(parseHash(globalThis.location.hash));
   };
 
-  window.addEventListener("hashchange", handler);
+  globalThis.addEventListener("hashchange", handler);
 
   // Fire immediately for the initial route
   handler();
 
   return () => {
-    window.removeEventListener("hashchange", handler);
+    globalThis.removeEventListener("hashchange", handler);
   };
 }
 
@@ -61,7 +61,7 @@ export function syncRouterWithStore(store: {
   const unsubRoute = onRouteChange((tab) => {
     const state = store.getState();
     if (state.sessionActive && state.activeTab !== tab) {
-      window.location.hash = `#${state.activeTab}`;
+      globalThis.location.hash = `#${state.activeTab}`;
       return;
     }
     const current = state.activeTab;
@@ -78,9 +78,9 @@ export function syncRouterWithStore(store: {
     (s) => s.activeTab,
     (tab) => {
       if (store.getState().sessionActive) return;
-      const hashTab = parseHash(window.location.hash);
+      const hashTab = parseHash(globalThis.location.hash);
       if (hashTab !== tab) {
-        window.location.hash = `#${tab}`;
+        globalThis.location.hash = `#${tab}`;
       }
     },
   );

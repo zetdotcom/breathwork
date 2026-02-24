@@ -184,8 +184,9 @@ export class BreathCircle extends HTMLElement {
       this.#directionText.textContent = direction === "inhale" ? "IN" : "OUT";
     }
     if (this.#directionLabel) {
-      this.#directionLabel.textContent =
-        direction === "inhale" ? "INHALE" : "EXHALE";
+      this.#directionLabel.textContent = direction === "inhale"
+        ? "INHALE"
+        : "EXHALE";
     }
   }
 }

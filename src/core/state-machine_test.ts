@@ -1,13 +1,13 @@
 import { assertEquals } from "@std/assert";
-import { canTransition, transition, nextPhases } from "./state-machine.ts";
+import { canTransition, nextPhases, transition } from "./state-machine.ts";
 import { computeBreathState } from "./breathing-engine.ts";
 import {
-  formatMMSS,
   formatCentiseconds,
-  formatMMSScs,
   formatCountdownSeconds,
+  formatMMSS,
+  formatMMSScs,
 } from "../utils/time.ts";
-import { lerp, clamp, remap, easeInOut } from "../utils/math.ts";
+import { clamp, easeInOut, lerp, remap } from "../utils/math.ts";
 
 // ── State Machine ───────────────────────────────────────────────────
 
@@ -411,16 +411,22 @@ Deno.test("computeBreathState: progress stays within 0-1 bounds", () => {
   // Test at many time points to ensure progress never goes out of bounds
   for (let t = 0; t < 20000; t += 137) {
     const result = computeBreathState(t, "normal", 30);
-    assertEquals(result.progress >= 0 && result.progress <= 1, true,
-      `progress ${result.progress} out of bounds at t=${t}`);
+    assertEquals(
+      result.progress >= 0 && result.progress <= 1,
+      true,
+      `progress ${result.progress} out of bounds at t=${t}`,
+    );
   }
 });
 
 Deno.test("computeBreathState: breath count never exceeds target", () => {
   for (let t = 0; t < 200000; t += 500) {
     const result = computeBreathState(t, "normal", 5);
-    assertEquals(result.currentBreath <= 5, true,
-      `currentBreath ${result.currentBreath} exceeded target at t=${t}`);
+    assertEquals(
+      result.currentBreath <= 5,
+      true,
+      `currentBreath ${result.currentBreath} exceeded target at t=${t}`,
+    );
   }
 });
 
@@ -434,13 +440,16 @@ Deno.test("computeBreathState: direction alternates correctly through cycles", (
     { t: 2500, expected: "exhale" },
     { t: 3000, expected: "exhale" },
     { t: 4999, expected: "exhale" },
-    { t: 5000, expected: "inhale" },  // second cycle
-    { t: 7500, expected: "exhale" },  // second cycle exhale
+    { t: 5000, expected: "inhale" }, // second cycle
+    { t: 7500, expected: "exhale" }, // second cycle exhale
   ];
 
   for (const { t, expected } of checks) {
     const result = computeBreathState(t, "normal", 30);
-    assertEquals(result.direction, expected,
-      `expected ${expected} at t=${t}, got ${result.direction}`);
+    assertEquals(
+      result.direction,
+      expected,
+      `expected ${expected} at t=${t}, got ${result.direction}`,
+    );
   }
 });

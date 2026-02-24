@@ -21,13 +21,33 @@ import type { SessionRecord } from "../../core/app-state.ts";
 const DAY_LABELS = ["S", "M", "T", "W", "T", "F", "S"];
 
 const MONTH_NAMES = [
-  "JAN", "FEB", "MAR", "APR", "MAY", "JUN",
-  "JUL", "AUG", "SEP", "OCT", "NOV", "DEC",
+  "JAN",
+  "FEB",
+  "MAR",
+  "APR",
+  "MAY",
+  "JUN",
+  "JUL",
+  "AUG",
+  "SEP",
+  "OCT",
+  "NOV",
+  "DEC",
 ];
 
 const MONTH_NAMES_FULL = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 const TEMPLATE = document.createElement("template");
@@ -235,8 +255,12 @@ export class ConsistencyCalendar extends HTMLElement {
     this.#monthLabel = this.#root.getElementById("month-label");
     this.#daysGrid = this.#root.getElementById("days-grid");
     this.#dayLabelsEl = this.#root.getElementById("day-labels");
-    this.#prevBtn = this.#root.getElementById("prev-month") as HTMLButtonElement | null;
-    this.#nextBtn = this.#root.getElementById("next-month") as HTMLButtonElement | null;
+    this.#prevBtn = this.#root.getElementById("prev-month") as
+      | HTMLButtonElement
+      | null;
+    this.#nextBtn = this.#root.getElementById("next-month") as
+      | HTMLButtonElement
+      | null;
   }
 
   connectedCallback() {
@@ -331,16 +355,20 @@ export class ConsistencyCalendar extends HTMLElement {
 
     // Day cells
     for (let day = 1; day <= daysInMonth; day++) {
-      const dateKey = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+      const dateKey = `${year}-${String(month + 1).padStart(2, "0")}-${
+        String(day).padStart(2, "0")
+      }`;
       const hasSession = sessionDays.has(dateKey);
-      const isToday =
-        year === todayYear && month === todayMonth && day === todayDate;
+      const isToday = year === todayYear && month === todayMonth &&
+        day === todayDate;
 
       const classes = ["day"];
       if (hasSession) classes.push("has-session");
       if (isToday) classes.push("is-today");
 
-      html += `<div class="day-cell"><div class="${classes.join(" ")}">${day}</div></div>`;
+      html += `<div class="day-cell"><div class="${
+        classes.join(" ")
+      }">${day}</div></div>`;
     }
 
     this.#daysGrid.innerHTML = html;
@@ -357,7 +385,9 @@ export class ConsistencyCalendar extends HTMLElement {
     for (const session of sessions) {
       const d = new Date(session.startedAt);
       if (d.getFullYear() === year && d.getMonth() === month) {
-        const key = `${year}-${String(month + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+        const key = `${year}-${String(month + 1).padStart(2, "0")}-${
+          String(d.getDate()).padStart(2, "0")
+        }`;
         days.add(key);
       }
     }

@@ -16,7 +16,7 @@ import type { SessionPhase } from "../../core/app-state.ts";
 const PHASES = ["breathing", "retention", "recovery"] as const;
 type StepPhase = (typeof PHASES)[number];
 
-const LABELS: Record<StepPhase, string> = {
+const _LABELS: Record<StepPhase, string> = {
   breathing: "BREATHING",
   retention: "RETENTION",
   recovery: "RECOVERY",

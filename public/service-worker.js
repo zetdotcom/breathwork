@@ -21,7 +21,9 @@ self.addEventListener("activate", (event) => {
     caches.keys().then((keys) =>
       Promise.all(
         keys
-          .filter((key) => key.startsWith("breathwork-trainer-") && key !== CACHE_NAME)
+          .filter((key) =>
+            key.startsWith("breathwork-trainer-") && key !== CACHE_NAME
+          )
           .map((key) => caches.delete(key)),
       )
     ),

@@ -2,7 +2,7 @@
 // Deno-based build script using deno_emit (no npm/esbuild).
 // Bundles src/app/bootstrap.ts to public/app.js.
 
-import { bundle } from "jsr:@deno/emit@0.45.0";
+import { bundle } from "@deno/emit";
 
 const entry = new URL("./src/app/bootstrap.ts", import.meta.url);
 const outFile = new URL("./public/app.js", import.meta.url);

@@ -1,6 +1,6 @@
 import { appStore } from "../../core/store.ts";
 import { sessionEngine } from "../../core/breathing-engine.ts";
-import { formatMMSS, formatCentiseconds } from "../../utils/time.ts";
+import { formatCentiseconds, formatMMSS } from "../../utils/time.ts";
 import "../shared/session-header.ts";
 import "../shared/phase-stepper.ts";
 

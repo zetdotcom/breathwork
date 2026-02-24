@@ -188,12 +188,24 @@ export class SettingsScreen extends HTMLElement {
     this.#root = this.attachShadow({ mode: "open" });
     this.#root.appendChild(TEMPLATE.content.cloneNode(true));
 
-    this.#prepareTimeCtrl = this.#root.getElementById("prepare-time") as SegmentedControl | null;
-    this.#breathingSpeedCtrl = this.#root.getElementById("breathing-speed") as SegmentedControl | null;
-    this.#breathCountCtrl = this.#root.getElementById("breath-count") as SegmentedControl | null;
-    this.#soundToggle = this.#root.getElementById("sound-effects") as ToggleSwitch | null;
-    this.#hapticsToggle = this.#root.getElementById("haptics") as ToggleSwitch | null;
-    this.#backBtn = this.#root.getElementById("back-btn") as HTMLButtonElement | null;
+    this.#prepareTimeCtrl = this.#root.getElementById("prepare-time") as
+      | SegmentedControl
+      | null;
+    this.#breathingSpeedCtrl = this.#root.getElementById("breathing-speed") as
+      | SegmentedControl
+      | null;
+    this.#breathCountCtrl = this.#root.getElementById("breath-count") as
+      | SegmentedControl
+      | null;
+    this.#soundToggle = this.#root.getElementById("sound-effects") as
+      | ToggleSwitch
+      | null;
+    this.#hapticsToggle = this.#root.getElementById("haptics") as
+      | ToggleSwitch
+      | null;
+    this.#backBtn = this.#root.getElementById("back-btn") as
+      | HTMLButtonElement
+      | null;
   }
 
   connectedCallback() {
@@ -243,9 +255,18 @@ export class SettingsScreen extends HTMLElement {
 
     // ── Listen for changes ──
 
-    this.#prepareTimeCtrl?.addEventListener("change", this.#handlePrepareTimeChange);
-    this.#breathingSpeedCtrl?.addEventListener("change", this.#handleSpeedChange);
-    this.#breathCountCtrl?.addEventListener("change", this.#handleBreathCountChange);
+    this.#prepareTimeCtrl?.addEventListener(
+      "change",
+      this.#handlePrepareTimeChange,
+    );
+    this.#breathingSpeedCtrl?.addEventListener(
+      "change",
+      this.#handleSpeedChange,
+    );
+    this.#breathCountCtrl?.addEventListener(
+      "change",
+      this.#handleBreathCountChange,
+    );
     this.#soundToggle?.addEventListener("change", this.#handleSoundChange);
     this.#hapticsToggle?.addEventListener("change", this.#handleHapticsChange);
 
@@ -260,11 +281,23 @@ export class SettingsScreen extends HTMLElement {
   }
 
   disconnectedCallback() {
-    this.#prepareTimeCtrl?.removeEventListener("change", this.#handlePrepareTimeChange);
-    this.#breathingSpeedCtrl?.removeEventListener("change", this.#handleSpeedChange);
-    this.#breathCountCtrl?.removeEventListener("change", this.#handleBreathCountChange);
+    this.#prepareTimeCtrl?.removeEventListener(
+      "change",
+      this.#handlePrepareTimeChange,
+    );
+    this.#breathingSpeedCtrl?.removeEventListener(
+      "change",
+      this.#handleSpeedChange,
+    );
+    this.#breathCountCtrl?.removeEventListener(
+      "change",
+      this.#handleBreathCountChange,
+    );
     this.#soundToggle?.removeEventListener("change", this.#handleSoundChange);
-    this.#hapticsToggle?.removeEventListener("change", this.#handleHapticsChange);
+    this.#hapticsToggle?.removeEventListener(
+      "change",
+      this.#handleHapticsChange,
+    );
     this.#backBtn?.removeEventListener("click", this.#handleBack);
     this.#unsubscribe?.();
     this.#unsubscribe = null;
@@ -285,7 +318,9 @@ export class SettingsScreen extends HTMLElement {
   #handlePrepareTimeChange = (e: Event) => {
     const value = (e as CustomEvent).detail?.value;
     if (value != null) {
-      this.#updateSettings({ prepareSeconds: Number(value) as Settings["prepareSeconds"] });
+      this.#updateSettings({
+        prepareSeconds: Number(value) as Settings["prepareSeconds"],
+      });
     }
   };
 
@@ -299,7 +334,9 @@ export class SettingsScreen extends HTMLElement {
   #handleBreathCountChange = (e: Event) => {
     const value = (e as CustomEvent).detail?.value;
     if (value != null) {
-      this.#updateSettings({ breathCount: Number(value) as Settings["breathCount"] });
+      this.#updateSettings({
+        breathCount: Number(value) as Settings["breathCount"],
+      });
     }
   };
 

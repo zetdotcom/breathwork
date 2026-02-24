@@ -131,11 +131,12 @@ export class AudioController {
 
   #ensureContext(): boolean {
     if (!this.#enabled) return false;
-    if (typeof window === "undefined") return false;
+    if (typeof globalThis === "undefined") return false;
 
-    const Ctor =
-      window.AudioContext ||
-      (window as typeof window & { webkitAudioContext?: typeof AudioContext })
+    const Ctor = globalThis.AudioContext ||
+      (globalThis as typeof globalThis & {
+        webkitAudioContext?: typeof AudioContext;
+      })
         .webkitAudioContext;
     if (!Ctor) return false;
 

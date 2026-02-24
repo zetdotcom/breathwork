@@ -286,8 +286,9 @@ export class RetentionChart extends HTMLElement {
     for (let i = 0; i < data.length; i++) {
       const entry = data[i];
       if (!entry) continue;
-      const heightPct =
-        maxMs > 0 ? Math.round((entry.bestRetentionMs / maxMs) * 100) : 0;
+      const heightPct = maxMs > 0
+        ? Math.round((entry.bestRetentionMs / maxMs) * 100)
+        : 0;
       const isMax = entry.bestRetentionMs === maxMs && maxMs > 0;
       const isEmpty = entry.bestRetentionMs === 0;
       const isToday = entry.dayOfWeek === todayDow;
@@ -299,19 +300,22 @@ export class RetentionChart extends HTMLElement {
       const dayLabelClasses = ["day-label"];
       if (isToday) dayLabelClasses.push("is-today");
 
-      const tooltipHtml =
-        entry.bestRetentionMs > 0
-          ? `<div class="tooltip">${formatMinSec(entry.bestRetentionMs)}</div>`
-          : "";
+      const tooltipHtml = entry.bestRetentionMs > 0
+        ? `<div class="tooltip">${formatMinSec(entry.bestRetentionMs)}</div>`
+        : "";
 
       html += `
         <div class="bar-group">
           <div class="bar-track">
-            <div class="${fillClasses.join(" ")}" style="height: ${isEmpty ? 0 : Math.max(heightPct, 4)}%">
+            <div class="${fillClasses.join(" ")}" style="height: ${
+        isEmpty ? 0 : Math.max(heightPct, 4)
+      }%">
               ${tooltipHtml}
             </div>
           </div>
-          <span class="${dayLabelClasses.join(" ")}">${SHORT_DAYS[entry.dayOfWeek] ?? ""}</span>
+          <span class="${dayLabelClasses.join(" ")}">${
+        SHORT_DAYS[entry.dayOfWeek] ?? ""
+      }</span>
         </div>
       `;
     }
@@ -337,13 +341,17 @@ export class RetentionChart extends HTMLElement {
     for (let i = 6; i >= 0; i--) {
       const d = new Date(now);
       d.setDate(d.getDate() - i);
-      const dateKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+      const dateKey = `${d.getFullYear()}-${
+        String(d.getMonth() + 1).padStart(2, "0")
+      }-${String(d.getDate()).padStart(2, "0")}`;
 
       // Find best retention for this day
       let bestMs = 0;
       for (const session of sessions) {
         const sd = new Date(session.startedAt);
-        const sessionKey = `${sd.getFullYear()}-${String(sd.getMonth() + 1).padStart(2, "0")}-${String(sd.getDate()).padStart(2, "0")}`;
+        const sessionKey = `${sd.getFullYear()}-${
+          String(sd.getMonth() + 1).padStart(2, "0")
+        }-${String(sd.getDate()).padStart(2, "0")}`;
         if (sessionKey === dateKey) {
           const sessionBest = session.rounds.reduce(
             (max, r) => Math.max(max, r.retentionMs),

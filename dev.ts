@@ -1,10 +1,6 @@
-import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
-import {
-  extname,
-  join,
-  normalize,
-} from "https://deno.land/std@0.224.0/path/mod.ts";
-import { bundle } from "jsr:@deno/emit@0.45.0";
+import { serve } from "@std/http/server";
+import { extname, join, normalize } from "@std/path";
+import { bundle } from "@deno/emit";
 
 const PORT = Number(Deno.env.get("PORT") ?? 8000);
 const ROOT = Deno.cwd();

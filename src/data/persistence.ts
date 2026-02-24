@@ -106,10 +106,9 @@ export async function initPersistence(): Promise<() => void> {
 
         // Update the store's sessions array (upsert).
         const existing = state.sessions.findIndex((s) => s.id === record.id);
-        const updatedSessions =
-          existing >= 0
-            ? state.sessions.map((s) => (s.id === record.id ? record : s))
-            : [record, ...state.sessions];
+        const updatedSessions = existing >= 0
+          ? state.sessions.map((s) => (s.id === record.id ? record : s))
+          : [record, ...state.sessions];
 
         appStore.setState(
           { sessions: updatedSessions },

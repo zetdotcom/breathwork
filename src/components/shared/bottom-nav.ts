@@ -94,8 +94,9 @@ TEMPLATE.innerHTML = `
   </style>
 
   <nav role="tablist" aria-label="Main navigation">
-    ${TABS.map(
-      (tab) => `
+    ${
+  TABS.map(
+    (tab) => `
       <button
         role="tab"
         data-tab="${tab.id}"
@@ -106,7 +107,8 @@ TEMPLATE.innerHTML = `
         <span class="label">${tab.label}</span>
       </button>
     `,
-    ).join("")}
+  ).join("")
+}
   </nav>
 `;
 

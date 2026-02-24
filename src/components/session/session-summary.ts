@@ -1,6 +1,6 @@
 import { appStore } from "../../core/store.ts";
 import { sessionEngine } from "../../core/breathing-engine.ts";
-import { formatMMSScs, formatMMSS } from "../../utils/time.ts";
+import { formatMMSS, formatMMSScs } from "../../utils/time.ts";
 import "../shared/session-header.ts";
 
 /**
@@ -360,7 +360,8 @@ export class SessionSummary extends HTMLElement {
       if (rounds.length === 0) {
         const empty = document.createElement("div");
         empty.className = "round-row";
-        empty.innerHTML = `<span class="round-label">No rounds completed</span>`;
+        empty.innerHTML =
+          `<span class="round-label">No rounds completed</span>`;
         this.#roundList.appendChild(empty);
       } else {
         for (let i = 0; i < rounds.length; i++) {

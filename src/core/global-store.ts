@@ -33,10 +33,9 @@ export class Store<State extends Record<string, unknown>> {
 
   setState(updater: StateUpdater<State>, meta?: UpdateMeta): void {
     const prev = this.#state;
-    const next =
-      typeof updater === "function"
-        ? (updater as (p: State) => State)(prev)
-        : { ...prev, ...updater };
+    const next = typeof updater === "function"
+      ? (updater as (p: State) => State)(prev)
+      : { ...prev, ...updater };
 
     if (Object.is(prev, next)) return;
 

@@ -1,5 +1,5 @@
 import type { SessionRecord } from "../../core/app-state.ts";
-import { formatShortDate, formatMinSec } from "../../utils/time.ts";
+import { formatMinSec, formatShortDate } from "../../utils/time.ts";
 
 /**
  * Session card component for the history list.
@@ -223,7 +223,8 @@ export class SessionCard extends HTMLElement {
 
     // Details: "3 Rounds • 2:15 max"
     if (this.#detailsEl) {
-      this.#detailsEl.innerHTML = `${roundCount} ${roundLabel} &bull; <span class="max-time">${bestLabel} max</span>`;
+      this.#detailsEl.innerHTML =
+        `${roundCount} ${roundLabel} &bull; <span class="max-time">${bestLabel} max</span>`;
     }
 
     this.#card?.setAttribute(

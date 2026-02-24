@@ -308,14 +308,13 @@ export class SessionEngine {
 
   #startBreathing(): void {
     const state = appStore.getState();
-    const nextRound =
-      state.phase === "summary"
-        ? state.currentRound + 1
-        : state.phase === "recovery"
-          ? state.currentRound + 1
-          : state.phase === "round-break"
-            ? state.currentRound + 1
-            : state.currentRound;
+    const nextRound = state.phase === "summary"
+      ? state.currentRound + 1
+      : state.phase === "recovery"
+      ? state.currentRound + 1
+      : state.phase === "round-break"
+      ? state.currentRound + 1
+      : state.currentRound;
 
     appStore.setState(
       {
