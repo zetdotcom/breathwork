@@ -67,6 +67,7 @@ export type AppState = {
   // Persisted
   settings: Settings;
   sessions: SessionRecord[];
+  hydrated: boolean;
 };
 
 // ── Defaults ─────────────────────────────────────────────────────────
@@ -98,4 +99,5 @@ export const initialState: AppState = {
 
   settings: defaultSettings,
   sessions: [],
+  hydrated: false,
 };

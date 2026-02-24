@@ -59,7 +59,12 @@ export function syncRouterWithStore(store: {
 }): () => void {
   // Hash → store
   const unsubRoute = onRouteChange((tab) => {
-    const current = store.getState().activeTab;
+    const state = store.getState();
+    if (state.sessionActive && state.activeTab !== tab) {
+      window.location.hash = `#${state.activeTab}`;
+      return;
+    }
+    const current = state.activeTab;
     if (current !== tab) {
       store.setState(
         { activeTab: tab },
@@ -72,6 +77,7 @@ export function syncRouterWithStore(store: {
   const unsubStore = store.select(
     (s) => s.activeTab,
     (tab) => {
+      if (store.getState().sessionActive) return;
       const hashTab = parseHash(window.location.hash);
       if (hashTab !== tab) {
         window.location.hash = `#${tab}`;

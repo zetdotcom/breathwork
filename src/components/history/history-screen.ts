@@ -12,8 +12,8 @@ import "./session-card.ts";
  *   2. Retention Trends Chart (bar chart of last 7 days)
  *   3. Recent Sessions List (session-card components)
  *
- * Handles empty states gracefully: shows a friendly message when
- * no sessions have been recorded yet.
+ * Handles empty and loading states gracefully: shows a friendly message when
+ * no sessions have been recorded yet, and a loading state while data hydrates.
  *
  * Reads session data from the global store and subscribes to changes
  * so the list updates in real time (e.g. after completing a session).
@@ -180,9 +180,9 @@ export class HistoryScreen extends HTMLElement {
   }
 
   connectedCallback() {
-    // Subscribe to session changes
+    // Subscribe to session + hydration changes
     this.#unsubscribe = appStore.select(
-      (s) => s.sessions,
+      (s) => `${s.hydrated}-${s.sessions.length}`,
       () => this.#render(),
     );
 
@@ -200,6 +200,11 @@ export class HistoryScreen extends HTMLElement {
     if (!this.#bodyEl) return;
 
     const sessions: SessionRecord[] = appStore.getState().sessions;
+
+    if (!appStore.getState().hydrated) {
+      this.#renderLoading();
+      return;
+    }
 
     // Avoid unnecessary full re-renders for the same session count.
     // Sub-components (calendar, chart) have their own store subscriptions.
@@ -226,6 +231,20 @@ export class HistoryScreen extends HTMLElement {
       <p class="empty-subtitle">Complete your first breathwork session to see your history and insights here.</p>
     `;
     this.#bodyEl.appendChild(empty);
+  }
+
+  #renderLoading() {
+    if (!this.#bodyEl) return;
+    this.#bodyEl.innerHTML = "";
+
+    const loading = document.createElement("div");
+    loading.className = "empty-state";
+    loading.innerHTML = `
+      <span class="empty-icon" aria-hidden="true">hourglass_empty</span>
+      <h2 class="empty-title">Loading History</h2>
+      <p class="empty-subtitle">Fetching your sessions…</p>
+    `;
+    this.#bodyEl.appendChild(loading);
   }
 
   #renderFull(sessions: SessionRecord[]) {

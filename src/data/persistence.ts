@@ -46,6 +46,11 @@ export async function initPersistence(): Promise<() => void> {
     );
   }
 
+  appStore.setState(
+    { hydrated: true },
+    { source: "Persistence", action: "HYDRATE_DONE" },
+  );
+
   // ── 2. Subscribe to changes ───────────────────────────────────────
 
   const cleanups: (() => void)[] = [];
@@ -55,9 +60,9 @@ export async function initPersistence(): Promise<() => void> {
     appStore.select(
       (s) => s.settings,
       (settings) => {
-        repo.saveSettings(settings).catch((err) =>
-          console.warn("Failed to persist settings:", err)
-        );
+        repo
+          .saveSettings(settings)
+          .catch((err) => console.warn("Failed to persist settings:", err));
       },
     ),
   );
@@ -112,9 +117,9 @@ export async function initPersistence(): Promise<() => void> {
         );
 
         // Persist to IndexedDB.
-        repo.saveSession(record).catch((err) =>
-          console.warn("Failed to persist session:", err)
-        );
+        repo
+          .saveSession(record)
+          .catch((err) => console.warn("Failed to persist session:", err));
       },
     ),
   );

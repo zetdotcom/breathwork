@@ -71,12 +71,30 @@ TEMPLATE.innerHTML = `
       inset: 0;
       z-index: 200;
       background: var(--color-bg-dark, #101922);
-      display: none;
+      display: flex;
       flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 200ms ease;
     }
 
     .session-overlay[data-active] {
-      display: flex;
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .session-overlay .phase-screen {
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 200ms ease, transform 200ms ease;
+      will-change: opacity, transform;
+    }
+
+    .session-overlay[data-active] .phase-screen[data-mounted] {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* ── Breathe tab — idle home screen ── */
@@ -180,6 +198,17 @@ TEMPLATE.innerHTML = `
       font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
     }
 
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
 
   </style>
 
@@ -213,7 +242,21 @@ TEMPLATE.innerHTML = `
   <bottom-nav id="bottom-nav"></bottom-nav>
 
   <!-- Session overlay — content is dynamically swapped per phase -->
-  <div class="session-overlay" id="session-overlay"></div>
+  <div
+    class="session-overlay"
+    id="session-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Breathwork session"
+    aria-hidden="true"
+    tabindex="-1"
+  ></div>
+  <div
+    class="sr-only"
+    id="phase-announce"
+    aria-live="polite"
+    aria-atomic="true"
+  ></div>
 `;
 
 export class AppRoot extends HTMLElement {
@@ -223,6 +266,8 @@ export class AppRoot extends HTMLElement {
   #sessionOverlay: HTMLElement | null = null;
   #startBtn: HTMLButtonElement | null = null;
   #cleanups: (() => void)[] = [];
+  #lastFocused: HTMLElement | null = null;
+  #phaseAnnounce: HTMLElement | null = null;
 
   /** Track which phase screen is currently mounted to avoid redundant swaps. */
   #currentOverlayPhase: SessionPhase | null = null;
@@ -242,6 +287,7 @@ export class AppRoot extends HTMLElement {
 
     this.#bottomNav = this.#root.getElementById("bottom-nav");
     this.#sessionOverlay = this.#root.getElementById("session-overlay");
+    this.#phaseAnnounce = this.#root.getElementById("phase-announce");
     this.#startBtn = this.#root.getElementById(
       "start-session-btn",
     ) as HTMLButtonElement | null;
@@ -301,13 +347,21 @@ export class AppRoot extends HTMLElement {
 
   #toggleSessionOverlay(active: boolean) {
     if (active) {
+      this.#lastFocused = document.activeElement as HTMLElement | null;
       this.#sessionOverlay?.setAttribute("data-active", "");
+      this.#sessionOverlay?.removeAttribute("aria-hidden");
       this.#bottomNav?.setAttribute("hidden", "");
+      this.#setTabViewsAriaHidden(true);
+      this.#focusOverlay();
     } else {
       this.#sessionOverlay?.removeAttribute("data-active");
+      this.#sessionOverlay?.setAttribute("aria-hidden", "true");
       this.#bottomNav?.removeAttribute("hidden");
+      this.#setTabViewsAriaHidden(false);
       // Clear the overlay content when session ends
       this.#clearOverlay();
+      this.#lastFocused?.focus?.();
+      this.#lastFocused = null;
     }
   }
 
@@ -321,6 +375,8 @@ export class AppRoot extends HTMLElement {
 
     const tag = PHASE_SCREEN_TAG[phase];
 
+    this.#announcePhase(phase);
+
     if (!tag) {
       // Phase is "idle" or unknown — clear the overlay
       this.#clearOverlay();
@@ -331,7 +387,14 @@ export class AppRoot extends HTMLElement {
     if (this.#sessionOverlay) {
       this.#sessionOverlay.innerHTML = "";
       const screen = document.createElement(tag);
+      screen.classList.add("phase-screen");
       this.#sessionOverlay.appendChild(screen);
+      requestAnimationFrame(() => {
+        screen.setAttribute("data-mounted", "");
+      });
+      if (this.#sessionOverlay.hasAttribute("data-active")) {
+        this.#focusOverlay();
+      }
     }
 
     this.#currentOverlayPhase = phase;
@@ -342,6 +405,54 @@ export class AppRoot extends HTMLElement {
       this.#sessionOverlay.innerHTML = "";
     }
     this.#currentOverlayPhase = null;
+  }
+
+  #announcePhase(phase: SessionPhase) {
+    if (!this.#phaseAnnounce) return;
+    const label = this.#phaseLabel(phase);
+    if (label) {
+      this.#phaseAnnounce.textContent = label;
+    }
+  }
+
+  #phaseLabel(phase: SessionPhase): string {
+    const labels: Record<SessionPhase, string> = {
+      idle: "Session ended",
+      prepare: "Get ready",
+      breathing: "Breathing phase",
+      retention: "Retention hold",
+      recovery: "Recovery breath",
+      "round-break": "Next round",
+      summary: "Session complete",
+    };
+    return labels[phase] ?? "Session update";
+  }
+
+  #focusOverlay() {
+    if (!this.#sessionOverlay) return;
+    const screen =
+      this.#sessionOverlay.querySelector<HTMLElement>(".phase-screen");
+    const focusable =
+      this.#findFocusable(screen) ?? this.#findFocusable(this.#sessionOverlay);
+    (focusable ?? this.#sessionOverlay).focus?.();
+  }
+
+  #findFocusable(root: HTMLElement | null): HTMLElement | null {
+    if (!root) return null;
+    const searchRoot = (root.shadowRoot ?? root) as ParentNode;
+    return searchRoot.querySelector<HTMLElement>(
+      "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])",
+    );
+  }
+
+  #setTabViewsAriaHidden(hidden: boolean) {
+    for (const [, el] of this.#tabViews) {
+      if (hidden) {
+        el.setAttribute("aria-hidden", "true");
+      } else {
+        el.removeAttribute("aria-hidden");
+      }
+    }
   }
 
   /**

@@ -126,7 +126,7 @@ TEMPLATE.innerHTML = `
     }
   </style>
 
-  <div class="card" role="button" tabindex="0">
+  <div class="card" role="button" tabindex="0" aria-label="View session details">
     <div class="left">
       <div class="icon-badge">
         <span class="icon" id="session-icon" aria-hidden="true">timer</span>
@@ -147,6 +147,7 @@ export class SessionCard extends HTMLElement {
   #iconEl: HTMLElement | null = null;
   #dateEl: HTMLElement | null = null;
   #detailsEl: HTMLElement | null = null;
+  #card: HTMLElement | null = null;
 
   constructor() {
     super();
@@ -156,7 +157,23 @@ export class SessionCard extends HTMLElement {
     this.#iconEl = this.#root.getElementById("session-icon");
     this.#dateEl = this.#root.getElementById("session-date");
     this.#detailsEl = this.#root.getElementById("session-details");
+    this.#card = this.#root.querySelector(".card");
   }
+
+  connectedCallback() {
+    this.#card?.addEventListener("keydown", this.#handleKeydown);
+  }
+
+  disconnectedCallback() {
+    this.#card?.removeEventListener("keydown", this.#handleKeydown);
+  }
+
+  #handleKeydown = (e: KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      this.#card?.click();
+    }
+  };
 
   /** The session record to render. Triggers a re-render. */
   set session(record: SessionRecord) {
@@ -190,22 +207,29 @@ export class SessionCard extends HTMLElement {
     if (!this.#session) return;
 
     const session = this.#session;
+    const dateLabel = formatShortDate(session.startedAt);
+    const roundCount = session.rounds.length;
+    const bestMs = session.rounds.reduce(
+      (max, r) => Math.max(max, r.retentionMs),
+      0,
+    );
+    const roundLabel = roundCount === 1 ? "Round" : "Rounds";
+    const bestLabel = formatMinSec(bestMs);
 
     // Date
     if (this.#dateEl) {
-      this.#dateEl.textContent = formatShortDate(session.startedAt);
+      this.#dateEl.textContent = dateLabel;
     }
 
     // Details: "3 Rounds • 2:15 max"
     if (this.#detailsEl) {
-      const roundCount = session.rounds.length;
-      const bestMs = session.rounds.reduce(
-        (max, r) => Math.max(max, r.retentionMs),
-        0,
-      );
-      const roundLabel = roundCount === 1 ? "Round" : "Rounds";
-      this.#detailsEl.innerHTML = `${roundCount} ${roundLabel} &bull; <span class="max-time">${formatMinSec(bestMs)} max</span>`;
+      this.#detailsEl.innerHTML = `${roundCount} ${roundLabel} &bull; <span class="max-time">${bestLabel} max</span>`;
     }
+
+    this.#card?.setAttribute(
+      "aria-label",
+      `${dateLabel} • ${roundCount} ${roundLabel} • ${bestLabel} max`,
+    );
   }
 }
 

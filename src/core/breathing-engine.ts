@@ -1,10 +1,5 @@
 import { appStore } from "./store.ts";
-import type {
-  AppState,
-  BreathDirection,
-  RoundRecord,
-  Speed,
-} from "./app-state.ts";
+import type { BreathDirection, RoundRecord, Speed } from "./app-state.ts";
 import { canTransition } from "./state-machine.ts";
 import {
   AnimationLoop,
@@ -13,6 +8,15 @@ import {
   type TimeSource,
 } from "./timers.ts";
 import { clamp } from "../utils/math.ts";
+
+type FeedbackEvent =
+  | "skip-prepare"
+  | "skip-breathing"
+  | "skip-round-break"
+  | "end-retention"
+  | "finish-session";
+
+const ACTION_DEBOUNCE_MS = 400;
 
 // ── Speed → cycle duration mapping ──────────────────────────────────
 
@@ -98,11 +102,33 @@ export class SessionEngine {
   /** Timestamp (ms since epoch) when retention phase started. */
   #retentionStartMs = 0;
 
+  /** Debounce rapid user actions (skip/finish). */
+  #lastActionAt = -Infinity;
+
+  /** Optional feedback hook (UI/audio/haptics). */
+  #feedbackHook: ((event: FeedbackEvent) => void) | null = null;
+
   /** Injectable time source for testability. */
   #now: TimeSource;
 
   constructor(now?: TimeSource) {
     this.#now = now ?? (() => performance.now());
+  }
+
+  /** Register optional feedback hook for UI/audio/haptics. */
+  setFeedbackHook(hook: ((event: FeedbackEvent) => void) | null): void {
+    this.#feedbackHook = hook;
+  }
+
+  #canTriggerAction(): boolean {
+    const now = this.#now();
+    if (now - this.#lastActionAt < ACTION_DEBOUNCE_MS) return false;
+    this.#lastActionAt = now;
+    return true;
+  }
+
+  #emitFeedback(event: FeedbackEvent): void {
+    this.#feedbackHook?.(event);
   }
 
   // ── Public API ────────────────────────────────────────────────────
@@ -162,6 +188,8 @@ export class SessionEngine {
    */
   skipPrepare(): void {
     if (appStore.getState().phase !== "prepare") return;
+    if (!this.#canTriggerAction()) return;
+    this.#emitFeedback("skip-prepare");
 
     appStore.setState(
       { prepareRemainingMs: 0 },
@@ -177,6 +205,8 @@ export class SessionEngine {
    */
   skipBreathing(): void {
     if (appStore.getState().phase !== "breathing") return;
+    if (!this.#canTriggerAction()) return;
+    this.#emitFeedback("skip-breathing");
     this.#endBreathing();
   }
 
@@ -186,6 +216,8 @@ export class SessionEngine {
    */
   endRetention(): void {
     if (appStore.getState().phase !== "retention") return;
+    if (!this.#canTriggerAction()) return;
+    this.#emitFeedback("end-retention");
     this.#transitionToRecovery();
   }
 
@@ -196,6 +228,9 @@ export class SessionEngine {
    * or called at any time to flag early exit.
    */
   finishSession(): void {
+    if (!this.#canTriggerAction()) return;
+    this.#emitFeedback("finish-session");
+
     const state = appStore.getState();
 
     if (state.phase === "recovery") {
@@ -232,6 +267,8 @@ export class SessionEngine {
    */
   skipRoundBreak(): void {
     if (appStore.getState().phase !== "round-break") return;
+    if (!this.#canTriggerAction()) return;
+    this.#emitFeedback("skip-round-break");
     this.#stopActiveLoop();
     this.#startBreathing();
   }

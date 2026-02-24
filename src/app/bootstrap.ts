@@ -1,5 +1,7 @@
 import "./app-root.ts";
 import { initPersistence } from "../data/persistence.ts";
+import { audioController } from "../core/audio.ts";
+import { hapticsController } from "../core/haptics.ts";
 
 /**
  * Register the service worker for offline PWA support.
@@ -35,6 +37,9 @@ function boot(): void {
   initPersistence().catch((err) =>
     console.warn("Persistence init failed:", err),
   );
+
+  audioController.start();
+  hapticsController.start();
 
   registerServiceWorker();
 }

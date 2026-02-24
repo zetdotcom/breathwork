@@ -38,10 +38,11 @@ TEMPLATE.innerHTML = `
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 24px;
-      gap: 32px;
+      padding: 24px 20px 32px;
+      gap: 24px;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+      box-sizing: border-box;
     }
 
     /* ── Summary icon ── */
@@ -89,10 +90,11 @@ TEMPLATE.innerHTML = `
     /* ── Stats grid ── */
     .stats {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
       gap: 12px;
       width: 100%;
       max-width: 360px;
+      box-sizing: border-box;
     }
 
     .stat {
@@ -105,6 +107,8 @@ TEMPLATE.innerHTML = `
       border: 1px solid var(--color-border-dark, #334155);
       border-radius: var(--radius-md, 0.75rem);
       padding: 16px;
+      box-sizing: border-box;
+      text-align: center;
     }
 
     .stat-value {
@@ -113,6 +117,9 @@ TEMPLATE.innerHTML = `
       font-variant-numeric: tabular-nums;
       letter-spacing: -0.02em;
       color: var(--color-text, #f1f5f9);
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .stat-label {
@@ -145,16 +152,23 @@ TEMPLATE.innerHTML = `
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 12px;
       padding: 10px 14px;
       background: var(--color-surface-dark, #1e293b);
       border: 1px solid var(--color-border-dark, #334155);
       border-radius: var(--radius-sm, 0.5rem);
+      box-sizing: border-box;
+      overflow: hidden;
     }
 
     .round-label {
       font-size: 14px;
       font-weight: 500;
       color: var(--color-text, #f1f5f9);
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .round-time {
@@ -162,6 +176,8 @@ TEMPLATE.innerHTML = `
       font-weight: 600;
       font-variant-numeric: tabular-nums;
       color: var(--color-primary, #137fec);
+      flex-shrink: 0;
+      white-space: nowrap;
     }
 
     /* ── Action buttons ── */
