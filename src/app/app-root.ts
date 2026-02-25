@@ -4,6 +4,7 @@ import type { SessionPhase, TabId } from "../core/app-state.ts";
 import { syncRouterWithStore } from "./router.ts";
 import "../components/shared/bottom-nav.ts";
 import "../components/shared/pwa-install-card.ts";
+import "../components/shared/sw-update-toast.ts";
 
 // Import session screen components so their custom elements are registered.
 // Each screen self-registers via customElements.define() on import.
@@ -242,6 +243,7 @@ TEMPLATE.innerHTML = `
 
   <!-- Bottom navigation -->
   <bottom-nav id="bottom-nav"></bottom-nav>
+  <sw-update-toast></sw-update-toast>
 
   <!-- Session overlay — content is dynamically swapped per phase -->
   <div
