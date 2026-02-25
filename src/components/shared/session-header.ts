@@ -4,11 +4,10 @@ import { sessionEngine } from "../../core/breathing-engine.ts";
 /**
  * Session header bar shown at the top of session overlay screens.
  *
- * Layout: [X close] — [● POWER BREATHING] — [⚙ settings]
+ * Layout: [X close] — [● POWER BREATHING]
  *
  * - X button: aborts the session (returns to idle)
  * - Center: title with green status dot
- * - Gear icon: placeholder for quick-access settings (disabled during MVP)
  *
  * Ref: top bar in `stitch/power_breathing_session/screen.png`
  */
@@ -28,7 +27,7 @@ TEMPLATE.innerHTML = `
     header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       max-width: 480px;
       margin: 0 auto;
       height: 40px;
@@ -80,6 +79,7 @@ TEMPLATE.innerHTML = `
       border: 1px solid var(--color-border-dark, #334155);
       border-radius: var(--radius-full, 9999px);
       padding: 6px 16px;
+      margin: 0 auto;
     }
 
     .status-dot {
@@ -99,10 +99,7 @@ TEMPLATE.innerHTML = `
       white-space: nowrap;
     }
 
-    .gear-btn {
-      opacity: 0.4;
-      pointer-events: none;
-    }
+
   </style>
 
   <header>
@@ -113,7 +110,7 @@ TEMPLATE.innerHTML = `
       <span class="title-text" id="title-text">POWER BREATHING</span>
     </div>
 
-    <button class="gear-btn" id="gear-btn" aria-label="Settings" tabindex="-1">settings</button>
+
   </header>
 `;
 
@@ -128,9 +125,9 @@ export class SessionHeader extends HTMLElement {
     this.#root = this.attachShadow({ mode: "open" });
     this.#root.appendChild(TEMPLATE.content.cloneNode(true));
 
-    this.#closeBtn = this.#root.getElementById("close-btn") as
-      | HTMLButtonElement
-      | null;
+    this.#closeBtn = this.#root.getElementById(
+      "close-btn",
+    ) as HTMLButtonElement | null;
     this.#titleText = this.#root.getElementById("title-text");
   }
 

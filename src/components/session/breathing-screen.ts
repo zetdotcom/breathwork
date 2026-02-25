@@ -9,7 +9,7 @@ import "./progress-bar.ts";
  * Breathing phase screen.
  *
  * Assembles: session-header + breath-circle + breath counter + progress-bar
- *            + phase-stepper + "SKIP" button.
+ *            + phase-stepper + "Go To Retention Phase" CTA button.
  *
  * Ref: `stitch/power_breathing_session/screen.png`
  */
@@ -96,33 +96,44 @@ TEMPLATE.innerHTML = `
       max-width: 320px;
     }
 
-    /* ── Bottom area: stepper + hint ── */
-    .bottom {
+    /* ── CTA button ── */
+    .cta-wrapper {
       width: 100%;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      padding-bottom: 8px;
+      justify-content: center;
     }
 
     .skip-btn {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
+      width: 100%;
+      max-width: 320px;
+      height: 56px;
+      background: var(--color-primary, #137fec);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md, 0.75rem);
+      font-size: 16px;
+      font-weight: 700;
+      font-family: var(--font-family, "Inter", system-ui, sans-serif);
+      letter-spacing: 0.04em;
       text-transform: uppercase;
-      color: var(--color-text-muted, #94a3b8);
-      background: none;
-      border: 1px solid var(--color-border-dark, #334155);
-      border-radius: 8px;
-      padding: 8px 24px;
       cursor: pointer;
-      transition: opacity 0.15s ease;
+      box-shadow: 0 4px 20px -4px rgba(19, 127, 236, 0.35);
+      transition: background 200ms ease, transform 100ms ease;
       -webkit-tap-highlight-color: transparent;
     }
 
+    .skip-btn:hover {
+      background: var(--color-primary-hover, #1a8ff8);
+    }
+
     .skip-btn:active {
-      opacity: 0.6;
+      transform: scale(0.97);
+    }
+
+    /* ── Bottom ── */
+    .bottom {
+      width: 100%;
+      padding-bottom: 8px;
     }
   </style>
 
@@ -145,11 +156,14 @@ TEMPLATE.innerHTML = `
     <div class="progress-wrapper">
       <progress-bar></progress-bar>
     </div>
+
+    <div class="cta-wrapper">
+      <button class="skip-btn" id="skip-btn">Go To Retention Phase</button>
+    </div>
   </div>
 
   <div class="bottom">
     <phase-stepper></phase-stepper>
-    <button class="skip-btn" id="skip-btn">SKIP</button>
   </div>
 `;
 

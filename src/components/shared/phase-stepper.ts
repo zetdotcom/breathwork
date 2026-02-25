@@ -4,7 +4,7 @@ import type { SessionPhase } from "../../core/app-state.ts";
 /**
  * Horizontal phase indicator: BREATHING → RETENTION → RECOVERY.
  *
- * - Active phase: blue dot (with ring) + bold blue label + "Current" badge.
+ * - Active phase: green dot (with ring) + bold green label.
  * - Completed phases: solid small dot + dimmed label.
  * - Future phases: hollow small dot + dimmed label.
  * - Connecting lines between phases.
@@ -44,14 +44,18 @@ TEMPLATE.innerHTML = `
       display: block;
       width: 100%;
       padding: 16px 24px;
+      box-sizing: border-box;
     }
 
     .stepper {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      max-width: 400px;
+      width: 100%;
+      max-width: 100%;
       margin: 0 auto;
+      gap: 8px;
+      box-sizing: border-box;
     }
 
     .step {
@@ -60,29 +64,11 @@ TEMPLATE.innerHTML = `
       align-items: center;
       gap: 6px;
       position: relative;
-      flex-shrink: 0;
+      flex: 1;
+      min-width: 0;
     }
 
-    /* "Current" badge above the active dot */
-    .badge {
-      position: absolute;
-      top: -20px;
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--color-primary, #137fec);
-      background: rgba(19, 127, 236, 0.15);
-      padding: 2px 8px;
-      border-radius: 4px;
-      white-space: nowrap;
-      opacity: 0;
-      transition: opacity 200ms ease;
-    }
 
-    .step[data-state="active"] .badge {
-      opacity: 1;
-    }
 
     /* Dot indicators */
     .dot {
@@ -97,8 +83,8 @@ TEMPLATE.innerHTML = `
     .step[data-state="active"] .dot {
       width: 12px;
       height: 12px;
-      background: var(--color-primary, #137fec);
-      box-shadow: 0 0 0 4px rgba(19, 127, 236, 0.2);
+      background: var(--color-success, #22c55e);
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.25);
     }
 
     .step[data-state="completed"] .dot {
@@ -119,11 +105,12 @@ TEMPLATE.innerHTML = `
       text-transform: uppercase;
       color: var(--color-text-muted, #94a3b8);
       transition: color 200ms ease, font-weight 200ms ease;
-      white-space: nowrap;
+      white-space: normal;
+      text-align: center;
     }
 
     .step[data-state="active"] .label {
-      color: var(--color-primary, #137fec);
+      color: var(--color-success, #22c55e);
       font-weight: 700;
     }
 
@@ -151,7 +138,7 @@ TEMPLATE.innerHTML = `
 
   <div class="stepper">
     <div class="step" data-phase="breathing" data-state="future">
-      <span class="badge">Current</span>
+
       <span class="dot"></span>
       <span class="label">BREATHING</span>
     </div>
@@ -159,7 +146,7 @@ TEMPLATE.innerHTML = `
     <div class="connector"></div>
 
     <div class="step" data-phase="retention" data-state="future">
-      <span class="badge">Current</span>
+
       <span class="dot"></span>
       <span class="label">RETENTION</span>
     </div>
@@ -167,7 +154,7 @@ TEMPLATE.innerHTML = `
     <div class="connector"></div>
 
     <div class="step" data-phase="recovery" data-state="future">
-      <span class="badge">Current</span>
+
       <span class="dot"></span>
       <span class="label">RECOVERY</span>
     </div>
