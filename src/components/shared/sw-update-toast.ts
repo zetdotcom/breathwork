@@ -177,7 +177,7 @@ export class SwUpdateToast extends HTMLElement {
     this.#unsubscribe?.();
     this.#unsubscribe = null;
     if (this.#remindTimeoutId !== null) {
-      window.clearTimeout(this.#remindTimeoutId);
+      globalThis.clearTimeout(this.#remindTimeoutId);
       this.#remindTimeoutId = null;
     }
   }
@@ -190,9 +190,9 @@ export class SwUpdateToast extends HTMLElement {
     this.#dismissed = true;
     this.removeAttribute("data-visible");
     if (this.#remindTimeoutId !== null) {
-      window.clearTimeout(this.#remindTimeoutId);
+      globalThis.clearTimeout(this.#remindTimeoutId);
     }
-    this.#remindTimeoutId = window.setTimeout(
+    this.#remindTimeoutId = globalThis.setTimeout(
       () => {
         if (swUpdateController.getState().hasUpdate) {
           this.#dismissed = false;

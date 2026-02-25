@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+# Run Deno formatter (auto-fix)
+deno fmt
+
+# Run Deno linter with auto-fix (fails if issues remain)
+deno lint --fix
+
+# Stage any fixes made by formatter/linter
+git add -A

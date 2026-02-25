@@ -21,7 +21,7 @@ const DEFAULT_STATE: InstallState = {
 
 function isStandaloneDisplay(): boolean {
   return (
-    window.matchMedia?.("(display-mode: standalone)")?.matches === true ||
+    globalThis.matchMedia?.("(display-mode: standalone)")?.matches === true ||
     (navigator as Navigator & { standalone?: boolean }).standalone === true
   );
 }
@@ -94,7 +94,7 @@ export class PwaInstallController {
   }
 
   #bindEvents(): void {
-    window.addEventListener("beforeinstallprompt", (event) => {
+    globalThis.addEventListener("beforeinstallprompt", (event) => {
       event.preventDefault();
       this.#deferredPrompt = event as BeforeInstallPromptEvent;
       const canInstall = !this.#state.isInstalled;
@@ -102,7 +102,7 @@ export class PwaInstallController {
       console.info("PWA install prompt ready:", { canInstall });
     });
 
-    window.addEventListener("appinstalled", () => {
+    globalThis.addEventListener("appinstalled", () => {
       this.#deferredPrompt = null;
       this.#update({
         isInstalled: true,
@@ -112,7 +112,7 @@ export class PwaInstallController {
       console.info("PWA appinstalled event received.");
     });
 
-    window.addEventListener("focus", () => {
+    globalThis.addEventListener("focus", () => {
       const installed = isStandaloneDisplay();
       if (installed !== this.#state.isInstalled) {
         this.#update({
@@ -128,7 +128,7 @@ export class PwaInstallController {
     const changed = Object.keys(next).some(
       (key) =>
         next[key as keyof InstallState] !==
-        this.#state[key as keyof InstallState],
+          this.#state[key as keyof InstallState],
     );
     this.#state = next;
     if (changed) {

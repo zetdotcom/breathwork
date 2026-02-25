@@ -205,7 +205,7 @@ export class PwaInstallCard extends HTMLElement {
     this.#dismissBtn?.addEventListener("click", this.#handleDismiss);
     this.#syncFromAttributes();
     this.#unsubscribe = pwaInstallController.subscribe((state) =>
-      this.#syncFromState(state),
+      this.#syncFromState(state)
     );
     this.#render();
   }
@@ -259,8 +259,7 @@ export class PwaInstallCard extends HTMLElement {
 
   #applyVisibility(): void {
     if (!this.#lastState) return;
-    const shouldShow =
-      !this.#lastState.isInstalled &&
+    const shouldShow = !this.#lastState.isInstalled &&
       (this.#context === "settings" || !this.#lastState.dismissedHomePrompt);
 
     if (shouldShow) {

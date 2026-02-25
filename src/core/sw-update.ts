@@ -97,7 +97,7 @@ export class SwUpdateController {
    * Apply the update by telling the waiting SW to activate,
    * then reloading once control changes.
    */
-  async applyUpdate(): Promise<void> {
+  applyUpdate(): void {
     if (!this.#registration?.waiting) return;
 
     const waiting = this.#registration.waiting;
@@ -107,7 +107,7 @@ export class SwUpdateController {
         "controllerchange",
         onControllerChange,
       );
-      window.location.reload();
+      globalThis.location.reload();
     };
 
     navigator.serviceWorker.addEventListener(
@@ -136,11 +136,11 @@ export class SwUpdateController {
 
   #setupPeriodicChecks(): void {
     if (this.#intervalId) {
-      window.clearInterval(this.#intervalId);
+      globalThis.clearInterval(this.#intervalId);
       this.#intervalId = null;
     }
 
-    this.#intervalId = window.setInterval(() => {
+    this.#intervalId = globalThis.setInterval(() => {
       this.checkForUpdates();
     }, this.#options.checkIntervalMs);
 
@@ -162,7 +162,7 @@ export class SwUpdateController {
     const changed = Object.keys(next).some(
       (key) =>
         next[key as keyof UpdateState] !==
-        this.#state[key as keyof UpdateState],
+          this.#state[key as keyof UpdateState],
     );
     this.#state = next;
     if (changed) {

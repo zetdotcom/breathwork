@@ -11,8 +11,9 @@ async function registerServiceWorker(): Promise<void> {
   if (!("serviceWorker" in navigator)) return;
 
   try {
-    const registration =
-      await navigator.serviceWorker.register("/service-worker.js");
+    const registration = await navigator.serviceWorker.register(
+      "/service-worker.js",
+    );
     console.log("SW registered:", registration.scope);
 
     swUpdateController.start(registration, {
@@ -41,7 +42,9 @@ function boot(): void {
 
   // Hydrate store from IndexedDB (settings + session history), then
   // subscribe for future changes so they auto-persist.
-  initPersistence().catch((err) => console.warn("Persistence init failed:", err));
+  initPersistence().catch((err) =>
+    console.warn("Persistence init failed:", err)
+  );
 
   audioController.start();
   hapticsController.start();

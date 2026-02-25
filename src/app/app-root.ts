@@ -434,10 +434,11 @@ export class AppRoot extends HTMLElement {
 
   #focusOverlay() {
     if (!this.#sessionOverlay) return;
-    const screen =
-      this.#sessionOverlay.querySelector<HTMLElement>(".phase-screen");
-    const focusable =
-      this.#findFocusable(screen) ?? this.#findFocusable(this.#sessionOverlay);
+    const screen = this.#sessionOverlay.querySelector<HTMLElement>(
+      ".phase-screen",
+    );
+    const focusable = this.#findFocusable(screen) ??
+      this.#findFocusable(this.#sessionOverlay);
     (focusable ?? this.#sessionOverlay).focus?.();
   }
 

@@ -27,7 +27,7 @@ self.addEventListener("activate", (event) => {
                 key.startsWith("breathwork-trainer-") && key !== CACHE_NAME,
             )
             .map((key) => caches.delete(key)),
-        ),
+        )
       ),
   );
   self.clients.claim();

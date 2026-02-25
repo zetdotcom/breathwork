@@ -5,8 +5,11 @@
     "build": "deno run --allow-read --allow-write --allow-env --allow-net=jsr.io:443 build.ts",
     "test": "deno test src/",
     "lint": "deno lint",
+    "lint:fix": "deno lint --fix",
+    "fmt": "deno fmt",
     "fmt:check": "deno fmt --check",
-    "check": "deno check src/**/*.ts"
+    "check": "deno check src/**/*.ts",
+    "hooks:install": "git config core.hooksPath githooks"
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@1",
@@ -18,7 +21,7 @@
     "exclude": [".ai/", "assets/", ".github/copilot-instructions.md"]
   },
   "lint": {
-    "exclude": [".ai/", "assets/"]
+    "exclude": [".ai/", "assets/", ".github/copilot-instructions.md"]
   },
   "compilerOptions": {
     "strict": true,
