@@ -50,7 +50,12 @@ export class PwaInstallController {
   }
 
   requestInstall(): Promise<"accepted" | "dismissed" | "unavailable"> {
-    if (!this.#deferredPrompt) return Promise.resolve("unavailable");
+    if (!this.#deferredPrompt) {
+      console.warn(
+        "PWA install unavailable: beforeinstallprompt has not fired yet.",
+      );
+      return Promise.resolve("unavailable");
+    }
 
     const promptEvent = this.#deferredPrompt;
     this.#deferredPrompt = null;
@@ -60,16 +65,17 @@ export class PwaInstallController {
       .prompt()
       .then(async () => {
         const choice = await promptEvent.userChoice;
+        this.#update({ dismissedHomePrompt: true });
+        this.#persistDismissed(true);
+
         if (choice.outcome === "accepted") {
-          this.#update({ dismissedHomePrompt: true });
-          this.#persistDismissed(true);
-        } else {
-          this.#update({ dismissedHomePrompt: true });
-          this.#persistDismissed(true);
+          this.#update({ isInstalled: true, canInstall: false });
         }
+
         return choice.outcome;
       })
-      .catch(() => {
+      .catch((error) => {
+        console.warn("PWA install prompt failed:", error);
         this.#update({ dismissedHomePrompt: true });
         this.#persistDismissed(true);
         return "dismissed";
@@ -91,9 +97,9 @@ export class PwaInstallController {
     window.addEventListener("beforeinstallprompt", (event) => {
       event.preventDefault();
       this.#deferredPrompt = event as BeforeInstallPromptEvent;
-      this.#update({
-        canInstall: !this.#state.isInstalled,
-      });
+      const canInstall = !this.#state.isInstalled;
+      this.#update({ canInstall });
+      console.info("PWA install prompt ready:", { canInstall });
     });
 
     window.addEventListener("appinstalled", () => {
@@ -103,6 +109,7 @@ export class PwaInstallController {
         canInstall: false,
         dismissedHomePrompt: true,
       });
+      console.info("PWA appinstalled event received.");
     });
 
     window.addEventListener("focus", () => {

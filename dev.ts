@@ -47,12 +47,18 @@ function safePath(urlPath: string): string {
   return normalized.startsWith("/") ? normalized.slice(1) : normalized;
 }
 
-async function fileResponse(filePath: string): Promise<Response> {
+async function fileResponse(
+  filePath: string,
+  extraHeaders: Record<string, string> = {},
+): Promise<Response> {
   try {
     const data = await Deno.readFile(filePath);
     const headers = new Headers();
     headers.set("Content-Type", contentTypeFor(filePath));
     headers.set("Cache-Control", "no-cache");
+    for (const [key, value] of Object.entries(extraHeaders)) {
+      headers.set(key, value);
+    }
     return new Response(data, { status: 200, headers });
   } catch {
     return new Response("Not Found", { status: 404 });
@@ -64,7 +70,9 @@ async function handler(req: Request): Promise<Response> {
   const path = safePath(url.pathname);
 
   if (path === "" || path.endsWith("/")) {
-    return fileResponse(join(ROOT, "public", "index.html"));
+    return fileResponse(join(ROOT, "public", "index.html"), {
+      "Content-Security-Policy": "frame-ancestors 'none'",
+    });
   }
 
   if (path === "app.js") {

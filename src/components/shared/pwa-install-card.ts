@@ -103,6 +103,7 @@ TEMPLATE.innerHTML = `
       letter-spacing: 0.04em;
       text-transform: uppercase;
       cursor: pointer;
+      border: none;
       transition: background 200ms ease, transform 100ms ease;
       -webkit-tap-highlight-color: transparent;
     }
@@ -271,7 +272,7 @@ export class PwaInstallCard extends HTMLElement {
 
   #render(): void {
     if (this.#installBtn) {
-      this.#installBtn.disabled = false;
+      this.#installBtn.disabled = !this.#canInstall;
     }
 
     if (this.#dismissBtn) {
