@@ -5,7 +5,7 @@
   "id": "/",
   "lang": "en",
   "dir": "ltr",
-  "categories": ["health", "fitness", "lifestyle"],
+  "categories": ["health", "fitness", "lifestyle", "breathing"],
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
