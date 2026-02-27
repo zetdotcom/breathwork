@@ -2,6 +2,7 @@ import { appStore } from "../core/store.ts";
 import { sessionEngine } from "../core/breathing-engine.ts";
 import type { SessionPhase, TabId } from "../core/app-state.ts";
 import { syncRouterWithStore } from "./router.ts";
+import { wakeLockController } from "../core/wake-lock.ts";
 import "../components/shared/bottom-nav.ts";
 import "../components/shared/pwa-install-card.ts";
 import "../components/shared/sw-update-toast.ts";
@@ -312,7 +313,14 @@ export class AppRoot extends HTMLElement {
     // React to session active changes
     const unsubSession = appStore.select(
       (s) => s.sessionActive,
-      (active) => this.#toggleSessionOverlay(active),
+      (active) => {
+        this.#toggleSessionOverlay(active);
+        if (active) {
+          wakeLockController.start();
+        } else {
+          wakeLockController.stop();
+        }
+      },
     );
     this.#cleanups.push(unsubSession);
 
@@ -330,6 +338,9 @@ export class AppRoot extends HTMLElement {
     const state = appStore.getState();
     this.#showTab(state.activeTab);
     this.#toggleSessionOverlay(state.sessionActive);
+    if (state.sessionActive) {
+      wakeLockController.start();
+    }
     this.#renderPhaseScreen(state.phase);
   }
 
@@ -337,6 +348,7 @@ export class AppRoot extends HTMLElement {
     this.#startBtn?.removeEventListener("click", this.#handleStartSession);
     for (const cleanup of this.#cleanups) cleanup();
     this.#cleanups = [];
+    wakeLockController.stop();
   }
 
   #showTab(tab: TabId) {
