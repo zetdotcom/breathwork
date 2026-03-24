@@ -26,6 +26,15 @@ async function registerServiceWorker(): Promise<void> {
   }
 }
 
+function dismissBootScreen(): void {
+  requestAnimationFrame(() => {
+    document.body.dataset.appReady = "true";
+    setTimeout(() => {
+      document.getElementById("app-boot")?.remove();
+    }, 420);
+  });
+}
+
 /**
  * Boot the application.
  *
@@ -50,6 +59,7 @@ function boot(): void {
   hapticsController.start();
 
   registerServiceWorker();
+  dismissBootScreen();
 }
 
 if (document.readyState === "loading") {

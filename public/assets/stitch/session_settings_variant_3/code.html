@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Session Settings - Variant 3</title>
+    <script
+      src="https://cdn.tailwindcss.com?plugins=forms,container-queries"
+    ></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#0d59a5",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              "DEFAULT": "0.25rem",
+              "lg": "0.5rem",
+              "xl": "0.75rem",
+              "full": "9999px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* Custom scrollbar hide for cleaner UI */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display min-h-screen flex flex-col antialiased selection:bg-primary/30 selection:text-primary"
+  >
+    <!-- Header / Top Bar -->
+    <header
+      class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800"
+    >
+      <div class="flex items-center justify-between px-4 py-3">
+        <button
+          class="flex items-center justify-center w-10 h-10 rounded-full text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+        >
+          <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+        </button>
+        <h1
+          class="text-lg font-bold text-slate-900 dark:text-white tracking-tight"
+        >
+          Session Settings
+        </h1>
+        <div class="w-10"></div>
+        <!-- Spacer for centering -->
+      </div>
+    </header>
+    <!-- Main Content -->
+    <main class="flex-1 w-full max-w-md mx-auto p-4 pb-24 space-y-6">
+      <!-- Section: Sensory Feedback -->
+      <section>
+        <h2
+          class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3 px-1"
+        >
+          Sensory Feedback
+        </h2>
+        <div
+          class="bg-white dark:bg-[#1c2127] rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm"
+        >
+          <!-- Audio Cues -->
+          <div
+            class="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-800/50"
+          >
+            <div class="flex items-center gap-3">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
+              >
+                <span class="material-symbols-outlined text-[20px]"
+                >volume_up</span>
+              </div>
+              <div class="flex flex-col">
+                <span
+                  class="text-base font-medium text-slate-900 dark:text-slate-100"
+                >Audio Cues</span>
+                <span class="text-xs text-slate-500 dark:text-slate-400"
+                >Voice guidance during session</span>
+              </div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input checked="" class="sr-only peer" type="checkbox" value="" />
+              <div
+                class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/30 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"
+              >
+              </div>
+            </label>
+          </div>
+          <!-- Vibration Feedback -->
+          <div class="flex items-center justify-between p-4">
+            <div class="flex items-center gap-3">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
+              >
+                <span class="material-symbols-outlined text-[20px]"
+                >vibration</span>
+              </div>
+              <div class="flex flex-col">
+                <span
+                  class="text-base font-medium text-slate-900 dark:text-slate-100"
+                >Haptics</span>
+                <span class="text-xs text-slate-500 dark:text-slate-400"
+                >Vibration on inhale/exhale</span>
+              </div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input checked="" class="sr-only peer" type="checkbox" value="" />
+              <div
+                class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/30 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"
+              >
+              </div>
+            </label>
+          </div>
+        </div>
+      </section>
+      <!-- Section: Session Flow -->
+      <section>
+        <h2
+          class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3 px-1"
+        >
+          Flow Control
+        </h2>
+        <div
+          class="bg-white dark:bg-[#1c2127] rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm"
+        >
+          <!-- Auto-start -->
+          <div
+            class="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-800/50"
+          >
+            <div class="flex items-center gap-3">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
+              >
+                <span class="material-symbols-outlined text-[20px]"
+                >autoplay</span>
+              </div>
+              <div class="flex flex-col">
+                <span
+                  class="text-base font-medium text-slate-900 dark:text-slate-100"
+                >Auto-Start Next Round</span>
+                <span class="text-xs text-slate-500 dark:text-slate-400"
+                >Skip manual confirmation</span>
+              </div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input class="sr-only peer" type="checkbox" value="" />
+              <div
+                class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/30 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"
+              >
+              </div>
+            </label>
+          </div>
+          <!-- Warm up -->
+          <div class="flex items-center justify-between p-4">
+            <div class="flex items-center gap-3">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
+              >
+                <span class="material-symbols-outlined text-[20px]">timer</span>
+              </div>
+              <div class="flex flex-col">
+                <span
+                  class="text-base font-medium text-slate-900 dark:text-slate-100"
+                >Warm-up Phase</span>
+                <span class="text-xs text-slate-500 dark:text-slate-400"
+                >15s breathing prep</span>
+              </div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input checked="" class="sr-only peer" type="checkbox" value="" />
+              <div
+                class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/30 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"
+              >
+              </div>
+            </label>
+          </div>
+        </div>
+      </section>
+      <!-- Section: Advanced -->
+      <section>
+        <h2
+          class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3 px-1"
+        >
+          Advanced
+        </h2>
+        <div
+          class="bg-white dark:bg-[#1c2127] rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm divide-y divide-slate-100 dark:divide-slate-800/50"
+        >
+          <!-- Detailed Stats Toggle -->
+          <div class="flex items-center justify-between p-4">
+            <div class="flex items-center gap-3">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
+              >
+                <span class="material-symbols-outlined text-[20px]"
+                >analytics</span>
+              </div>
+              <div class="flex flex-col">
+                <span
+                  class="text-base font-medium text-slate-900 dark:text-slate-100"
+                >Live Metrics</span>
+                <span class="text-xs text-slate-500 dark:text-slate-400"
+                >Show HRV overlay</span>
+              </div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input class="sr-only peer" type="checkbox" value="" />
+              <div
+                class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/30 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"
+              >
+              </div>
+            </label>
+          </div>
+          <!-- Theme -->
+          <button
+            class="w-full flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors text-left group"
+          >
+            <div class="flex items-center gap-3">
+              <div
+                class="flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
+              >
+                <span class="material-symbols-outlined text-[20px]"
+                >palette</span>
+              </div>
+              <div class="flex flex-col">
+                <span
+                  class="text-base font-medium text-slate-900 dark:text-slate-100"
+                >Theme</span>
+                <span class="text-xs text-slate-500 dark:text-slate-400"
+                >Dark Mode</span>
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-2 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300"
+            >
+              <span class="text-sm">System</span>
+              <span class="material-symbols-outlined text-[20px]"
+              >chevron_right</span>
+            </div>
+          </button>
+        </div>
+      </section>
+      <!-- Danger Zone / Reset -->
+      <div class="px-1 pt-2">
+        <button
+          class="w-full py-3.5 rounded-xl border border-red-200 dark:border-red-900/30 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/10 font-medium text-sm hover:bg-red-100 dark:hover:bg-red-900/20 transition-colors flex items-center justify-center gap-2"
+        >
+          <span class="material-symbols-outlined text-[18px]">restart_alt</span>
+          Reset All Session Defaults
+        </button>
+      </div>
+    </main>
+    <!-- Bottom Navigation -->
+    <nav
+      class="fixed bottom-0 w-full z-40 bg-[#1c2127] border-t border-[#283039]"
+    >
+      <div
+        class="flex w-full justify-around items-end pb-safe pt-2 px-2 max-w-md mx-auto h-[80px]"
+      >
+        <!-- h-20 for enough tap area + safe area bottom -->
+        <a
+          class="flex flex-1 flex-col items-center justify-center gap-1 group pb-4"
+          href="#"
+        >
+          <div
+            class="flex h-8 items-center justify-center text-[#9dabb9] group-hover:text-white transition-colors"
+          >
+            <span
+              class="material-symbols-outlined text-[28px]"
+              style="font-variation-settings: 'FILL' 0, 'wght' 300"
+            >home</span>
+          </div>
+          <span
+            class="text-[10px] font-medium text-[#9dabb9] group-hover:text-white transition-colors"
+          >Home</span>
+        </a>
+        <a
+          class="flex flex-1 flex-col items-center justify-center gap-1 group pb-4"
+          href="#"
+        >
+          <div
+            class="flex h-8 items-center justify-center text-[#9dabb9] group-hover:text-white transition-colors"
+          >
+            <span
+              class="material-symbols-outlined text-[28px]"
+              style="font-variation-settings: 'FILL' 0, 'wght' 300"
+            >bar_chart</span>
+          </div>
+          <span
+            class="text-[10px] font-medium text-[#9dabb9] group-hover:text-white transition-colors"
+          >Stats</span>
+        </a>
+        <a
+          class="flex flex-1 flex-col items-center justify-center gap-1 group pb-4"
+          href="#"
+        >
+          <div
+            class="flex h-8 items-center justify-center text-primary dark:text-primary animate-pulse-slow"
+          >
+            <span
+              class="material-symbols-outlined text-[28px]"
+              style="font-variation-settings: 'FILL' 1, 'wght' 400"
+            >settings</span>
+          </div>
+          <span class="text-[10px] font-medium text-primary dark:text-primary"
+          >Settings</span>
+        </a>
+        <a
+          class="flex flex-1 flex-col items-center justify-center gap-1 group pb-4"
+          href="#"
+        >
+          <div
+            class="flex h-8 items-center justify-center text-[#9dabb9] group-hover:text-white transition-colors"
+          >
+            <span
+              class="material-symbols-outlined text-[28px]"
+              style="font-variation-settings: 'FILL' 0, 'wght' 300"
+            >person</span>
+          </div>
+          <span
+            class="text-[10px] font-medium text-[#9dabb9] group-hover:text-white transition-colors"
+          >Profile</span>
+        </a>
+      </div>
+    </nav>
+    <!-- Safe Area Spacing for Bottom Nav on Mobile -->
+    <div class="h-[80px]"></div>
+  </body>
+</html>

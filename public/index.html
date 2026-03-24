@@ -37,8 +37,107 @@
           "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
           "Helvetica Neue", Arial, "Noto Sans", sans-serif;
       }
+
+      #app-boot {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: grid;
+        place-items: center;
+        padding: calc(env(safe-area-inset-top, 0px) + 32px)
+          calc(env(safe-area-inset-right, 0px) + 24px)
+          calc(env(safe-area-inset-bottom, 0px) + 32px)
+          calc(env(safe-area-inset-left, 0px) + 24px);
+        background:
+          radial-gradient(
+            circle at 18% 82%,
+            rgba(19, 127, 236, 0.28),
+            transparent 34%
+          ),
+          radial-gradient(
+          circle at 34% 22%,
+          rgba(60, 130, 224, 0.12),
+          transparent 40%
+        ),
+          linear-gradient(145deg, #122235 0%, #0d1823 58%, #09131d 100%);
+        transition:
+          opacity 280ms ease,
+          visibility 280ms ease,
+          transform 360ms ease;
+      }
+
+      body[data-app-ready="true"] #app-boot {
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(1.015);
+        pointer-events: none;
+      }
+
+      #app-boot .boot-shell {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+        text-align: center;
+      }
+
+      #app-boot .boot-mark {
+        width: min(40vw, 172px);
+        aspect-ratio: 1;
+        position: relative;
+      }
+
+      #app-boot .boot-mark::before,
+      #app-boot .boot-mark::after {
+        content: "";
+        position: absolute;
+        inset: 9%;
+        border-radius: 50%;
+        border: 1px solid rgba(127, 166, 228, 0.12);
+        animation: boot-breathe 2600ms ease-in-out infinite;
+      }
+
+      #app-boot .boot-mark::after {
+        inset: -6%;
+        opacity: 0.5;
+        animation-delay: -1300ms;
+      }
+
+      #app-boot svg {
+        width: 100%;
+        height: 100%;
+        filter: drop-shadow(0 18px 30px rgba(15, 105, 233, 0.22));
+      }
+
+      #app-boot .boot-title {
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      #app-boot .boot-subtitle {
+        color: rgba(148, 163, 184, 0.95);
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      @keyframes boot-breathe {
+        0%,
+        100% {
+          transform: scale(0.96);
+          opacity: 0.28;
+        }
+
+        50% {
+          transform: scale(1.03);
+          opacity: 0.72;
+        }
+      }
     </style>
     <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
     <link
       rel="icon"
       type="image/png"
@@ -93,6 +192,121 @@
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
+    <div id="app-boot" aria-hidden="true">
+      <div class="boot-shell">
+        <div class="boot-mark">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 1024 1024"
+            fill="none"
+          >
+            <defs>
+              <radialGradient
+                id="bootGlow"
+                cx="0"
+                cy="0"
+                r="1"
+                gradientUnits="userSpaceOnUse"
+                gradientTransform="translate(200 824) rotate(-35) scale(768 736)"
+              >
+                <stop stop-color="#1558B6" stop-opacity="0.32" />
+                <stop offset="1" stop-color="#0A1724" stop-opacity="0" />
+              </radialGradient>
+              <radialGradient
+                id="bootFill"
+                cx="0"
+                cy="0"
+                r="1"
+                gradientUnits="userSpaceOnUse"
+                gradientTransform="translate(358 286) rotate(52) scale(892 824)"
+              >
+                <stop stop-color="#16324C" />
+                <stop offset="0.58" stop-color="#0D2030" />
+                <stop offset="1" stop-color="#091521" />
+              </radialGradient>
+              <radialGradient
+                id="bootDisc"
+                cx="0"
+                cy="0"
+                r="1"
+                gradientUnits="userSpaceOnUse"
+                gradientTransform="translate(442 396) rotate(54) scale(608 572)"
+              >
+                <stop stop-color="#132A3F" />
+                <stop offset="0.72" stop-color="#0E1B28" />
+                <stop offset="1" stop-color="#0B1722" />
+              </radialGradient>
+              <linearGradient
+                id="bootRing"
+                x1="212"
+                y1="244"
+                x2="824"
+                y2="792"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#89B8FF" stop-opacity="0.78" />
+                <stop offset="0.45" stop-color="#2E74F0" />
+                <stop offset="1" stop-color="#5A9EFF" stop-opacity="0.88" />
+              </linearGradient>
+              <linearGradient
+                id="bootMark"
+                x1="512"
+                y1="340"
+                x2="512"
+                y2="680"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#72D5FF" />
+                <stop offset="1" stop-color="#2B90F4" />
+              </linearGradient>
+            </defs>
+
+            <rect width="1024" height="1024" rx="248" fill="url(#bootFill)" />
+            <rect width="1024" height="1024" rx="248" fill="url(#bootGlow)" />
+            <circle cx="512" cy="512" r="334" fill="url(#bootDisc)" />
+            <circle
+              cx="512"
+              cy="512"
+              r="334"
+              stroke="url(#bootRing)"
+              stroke-width="16"
+            />
+            <circle
+              cx="512"
+              cy="512"
+              r="390"
+              stroke="#80A9EE"
+              stroke-width="8"
+              opacity="0.1"
+            />
+            <circle
+              cx="512"
+              cy="512"
+              r="444"
+              stroke="#6C93D6"
+              stroke-width="8"
+              opacity="0.06"
+            />
+
+            <g
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="34"
+              stroke="url(#bootMark)"
+            >
+              <path d="M512 676Q416 528 512 366" />
+              <path d="M512 676Q608 528 512 366" />
+              <path d="M494 668Q291 587 335 502" />
+              <path d="M494 668Q449 451 335 502" />
+              <path d="M530 668Q733 587 689 502" />
+              <path d="M530 668Q575 451 689 502" />
+            </g>
+          </svg>
+        </div>
+        <div class="boot-title">Breathwork Trainer</div>
+        <div class="boot-subtitle">Preparing your session</div>
+      </div>
+    </div>
     <app-root></app-root>
 
     <noscript>This app requires JavaScript to run.</noscript>
